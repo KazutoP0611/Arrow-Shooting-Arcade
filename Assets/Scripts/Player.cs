@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public Animator anim { get; private set; }
     public Rigidbody rb { get; private set; }
     public Vector2 moveInput { get; private set; }
+    public Vector2 lookInput { get; private set; }
 
     #region Player' State
     public Player_IdleState idleState { get; private set; }
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
 
     [Header("Movement Details")]
     public float moveSpeed;
+    public float cameraPanSpeed;
 
     private ArcherInputActions input;
 
@@ -34,6 +36,9 @@ public class Player : MonoBehaviour
 
         input.Character.Move.performed += value => moveInput = value.ReadValue<Vector2>();
         input.Character.Move.canceled += value => moveInput = Vector2.zero;
+
+        input.Character.Look.performed += value => lookInput = value.ReadValue<Vector2>();
+        input.Character.Look.canceled += value => lookInput = Vector2.zero;
     }
 
     private void OnDisable()
@@ -49,6 +54,15 @@ public class Player : MonoBehaviour
     private void Update()
     {
         stateMachine.currentState.Update();
+        Look();
+    }
+
+    private void Look()
+    {
+        if (lookInput.x == 0 && lookInput.y == 0)
+            return;
+
+        transform.rotation = Quaternion.Euler(new Vector3(0, lookInput.x * cameraPanSpeed, 0));
     }
 
     public void SetVelocity(float xVelocity, float zVelocity)

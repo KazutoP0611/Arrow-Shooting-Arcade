@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,14 +16,21 @@ public class Player : MonoBehaviour
 
     [Header("Movement Details")]
     public float moveSpeed;
+    [Space]
+    public bool turnCharacterWhenMove = false;
+    public float turnSpeed;
+    [Space]
     public float cameraPanSpeed;
 
     private ArcherInputActions input;
+    private Camera cam;
+    private Vector3 direction = Vector3.zero;
 
     private void Awake()
     {
         stateMachine = new StateMachine();
         input = new ArcherInputActions();
+        cam = Camera.main;
 
         rb = GetComponent<Rigidbody>();
 
@@ -62,11 +70,33 @@ public class Player : MonoBehaviour
         if (lookInput.x == 0 && lookInput.y == 0)
             return;
 
-        transform.rotation = Quaternion.Euler(new Vector3(0, lookInput.x * cameraPanSpeed, 0));
+        //transform.rotation = Quaternion.Euler(new Vector3(0, lookInput.x * cameraPanSpeed, 0));
     }
 
     public void SetVelocity(float xVelocity, float zVelocity)
     {
-        rb.linearVelocity = new Vector3(xVelocity * moveSpeed, rb.linearVelocity.y, zVelocity * moveSpeed);
+        Vector3 forwardDirect = cam.transform.forward;
+        Vector3 rightDirect = cam.transform.right;
+
+        forwardDirect.y = 0;
+        rightDirect.y = 0;
+
+        forwardDirect.Normalize();
+        rightDirect.Normalize();
+
+        Vector3 newDirection = (forwardDirect * zVelocity) + (rightDirect * xVelocity);
+
+        if (newDirection.magnitude > 1.0f)
+            newDirection.Normalize();
+
+        direction = Vector3.Lerp(direction, newDirection, moveSpeed);
+
+        if (direction != Vector3.zero)
+        {
+            transform.position += direction * Time.fixedDeltaTime;
+
+            if (turnCharacterWhenMove)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.fixedDeltaTime);
+        }
     }
 }

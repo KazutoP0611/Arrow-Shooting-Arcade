@@ -10,7 +10,7 @@ public class Player_MoveState : EntityState
     {
         base.Update();
 
-        if (player.moveInput.x == 0)
+        if (player.moveInput.x == 0 && player.moveInput.y == 0)
             stateMachine.ChangeState(player.idleState);
 
         player.SetVelocity(player.moveInput.x, player.moveInput.y);

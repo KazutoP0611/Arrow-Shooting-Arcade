@@ -45,6 +45,15 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""55595110-77be-4047-8ce9-3e87ceb5d1e1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -113,6 +122,17 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83f5a6d5-1ef5-4c0d-be22-5832343cee53"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -140,6 +160,7 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
         m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
+        m_Character_Aim = m_Character.FindAction("Aim", throwIfNotFound: true);
     }
 
     ~@ArcherInputActions()
@@ -208,12 +229,14 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
     private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
     private readonly InputAction m_Character_Move;
     private readonly InputAction m_Character_Look;
+    private readonly InputAction m_Character_Aim;
     public struct CharacterActions
     {
         private @ArcherInputActions m_Wrapper;
         public CharacterActions(@ArcherInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Character_Move;
         public InputAction @Look => m_Wrapper.m_Character_Look;
+        public InputAction @Aim => m_Wrapper.m_Character_Aim;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -229,6 +252,9 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -239,6 +265,9 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -269,5 +298,6 @@ public partial class @ArcherInputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
 }

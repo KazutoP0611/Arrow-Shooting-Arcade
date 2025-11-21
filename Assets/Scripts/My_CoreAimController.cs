@@ -1,12 +1,22 @@
 using System.Collections.Generic;
 using Unity.Cinemachine;
+using Unity.Cinemachine.Samples;
 using UnityEngine;
 using static Unity.Cinemachine.Samples.SimplePlayerAimController;
 
 public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
 {
+    public enum CouplingMode { Coupled, CoupledWhenMoving, Decoupled }
+
+    [Tooltip("How the player's rotation is coupled to the camera's rotation.  Three modes are available:\n"
+        + "<b>Coupled</b>: The player rotates with the camera.  Sideways movement will result in strafing.\n"
+        + "<b>Coupled When Moving</b>: Camera can rotate freely around the player when the player is stationary, "
+            + "but the player will rotate to face camera forward when it starts moving.\n"
+        + "<b>Decoupled</b>: The player's rotation is independent of the camera's rotation.")]
+    public CouplingMode PlayerRotation;
+
     [Tooltip("How fast the player rotates to face the camera direction when the player starts moving.  "
-            + "Only used when Player Rotation is Coupled When Moving.")]
+        + "Only used when Player Rotation is Coupled When Moving.")]
     public float RotationDamping = 0.2f;
 
     [Tooltip("Horizontal Rotation.  Value is in degrees, with 0 being centered.")]
@@ -15,19 +25,21 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
     [Tooltip("Vertical Rotation.  Value is in degrees, with 0 being centered.")]
     public InputAxis VerticalLook = new() { Range = new Vector2(-70, 70), Recentering = InputAxis.RecenteringSettings.Default };
 
-    public CouplingMode PlayerRotation;
-
     private My_PlayerController m_Controller;
-    private Transform m_ControllerTransform;
+    private Transform m_ControllerTransform;    // cached for efficiency
     private Quaternion m_DesiredWorldRotation;
 
-    public void GetInputAxes(List<IInputAxisOwner.AxisDescriptor> axes)
+    /// Report the available input axes to the input axis controller.
+    /// We use the Input Axis Controller because it works with both the Input package
+    /// and the Legacy input system.  This is sample code and we
+    /// want it to work everywhere.
+    void IInputAxisOwner.GetInputAxes(List<IInputAxisOwner.AxisDescriptor> axes)
     {
         axes.Add(new() { DrivenAxis = () => ref HorizontalLook, Name = "Horizontal Look", Hint = IInputAxisOwner.AxisDescriptor.Hints.X });
         axes.Add(new() { DrivenAxis = () => ref VerticalLook, Name = "Vertical Look", Hint = IInputAxisOwner.AxisDescriptor.Hints.Y });
     }
 
-    private void OnValidate()
+    void OnValidate()
     {
         HorizontalLook.Validate();
         VerticalLook.Range.x = Mathf.Clamp(VerticalLook.Range.x, -90, 90);
@@ -35,7 +47,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
         VerticalLook.Validate();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         m_Controller = GetComponentInParent<My_PlayerController>();
         if (m_Controller == null)
@@ -48,6 +60,54 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
             m_Controller.PostUpdate += PostUpdate;
             m_ControllerTransform = m_Controller.transform;
         }
+    }
+
+    void OnDisable()
+    {
+        if (m_Controller != null)
+        {
+            m_Controller.PreUpdate -= UpdatePlayerRotation;
+            m_Controller.PostUpdate -= PostUpdate;
+            m_ControllerTransform = null;
+        }
+    }
+
+    /// <summary>Recenters the player to match my rotation</summary>
+    /// <param name="damping">How long the recentering should take</param>
+    public void RecenterPlayer(float damping = 0)
+    {
+        if (m_ControllerTransform == null)
+            return;
+
+        // Get my rotation relative to parent
+        var rot = transform.localRotation.eulerAngles;
+        rot.y = NormalizeAngle(rot.y);
+        var delta = rot.y;
+        delta = Damper.Damp(delta, damping, Time.deltaTime);
+
+        // Rotate the parent towards me
+        m_ControllerTransform.rotation = Quaternion.AngleAxis(
+            delta, m_ControllerTransform.up) * m_ControllerTransform.rotation;
+
+        // Rotate me in the opposite direction
+        HorizontalLook.Value -= delta;
+        rot.y -= delta;
+        transform.localRotation = Quaternion.Euler(rot);
+    }
+
+    /// <summary>
+    /// Set my rotation to look in this direction, without changing player rotation.
+    /// Here we only set the axis values, we let the player controller do the actual rotation.
+    /// </summary>
+    /// <param name="worldspaceDirection">Direction to look in, in worldspace</param>
+    public void SetLookDirection(Vector3 worldspaceDirection)
+    {
+        if (m_ControllerTransform == null)
+            return;
+        var rot = (Quaternion.Inverse(m_ControllerTransform.rotation)
+            * Quaternion.LookRotation(worldspaceDirection, m_ControllerTransform.up)).eulerAngles;
+        HorizontalLook.Value = HorizontalLook.ClampValue(rot.y);
+        VerticalLook.Value = VerticalLook.ClampValue(NormalizeAngle(rot.x));
     }
 
     // This is called by the player controller before it updates its own rotation.
@@ -84,7 +144,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
     }
 
     // Callback for player controller to update our rotation after it has updated its own.
-    private void PostUpdate(Vector3 vel, float speed)
+    void PostUpdate(Vector3 vel, float speed)
     {
         if (PlayerRotation == CouplingMode.Decoupled)
         {
@@ -97,28 +157,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
         }
     }
 
-    public void RecenterPlayer(float damping = 0)
-    {
-        if (m_ControllerTransform == null)
-            return;
-
-        // Get my rotation relative to parent
-        var rot = transform.localRotation.eulerAngles;
-        rot.y = NormalizeAngle(rot.y);
-        var delta = rot.y;
-        delta = Damper.Damp(delta, damping, Time.deltaTime);
-
-        // Rotate the parent towards me
-        m_ControllerTransform.rotation = Quaternion.AngleAxis(
-            delta, m_ControllerTransform.up) * m_ControllerTransform.rotation;
-
-        // Rotate me in the opposite direction
-        HorizontalLook.Value -= delta;
-        rot.y -= delta;
-        transform.localRotation = Quaternion.Euler(rot);
-    }
-
-    private float NormalizeAngle(float angle)
+    float NormalizeAngle(float angle)
     {
         while (angle > 180)
             angle -= 360;

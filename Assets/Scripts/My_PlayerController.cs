@@ -35,6 +35,7 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
 
     [Tooltip("Sprint movement.  Value is 0 or 1. If 1, then is sprinting")]
     public InputAxis Sprint = InputAxis.DefaultMomentary;
+    public float sprintThrehold = 0.5f;
 
     [Header("Events")]
     [Tooltip("This event is sent when the player lands after a jump.")]
@@ -102,7 +103,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     float m_CurrentVelocityY;
     bool m_IsSprinting;
     bool m_IsJumping;
-    bool m_IsAiming;
+    //bool m_IsAiming;
     CharacterController m_Controller; // optional
 
     // These are part of a strategy to combat input gimbal lock when controlling a player
@@ -120,7 +121,6 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
     public bool IsSprinting => m_IsSprinting;
     public bool IsJumping => m_IsJumping;
-    public bool IsAiming { get { return m_IsAiming; } set { m_IsAiming = value; } }
     public Camera Camera => CameraOverride == null ? Camera.main : CameraOverride;
 
     public bool IsGrounded() => GetDistanceFromGround(transform.position, UpDirection, 10) < 0.01f;
@@ -133,7 +133,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         m_CurrentVelocityY = 0;
         m_IsSprinting = false;
         m_IsJumping = false;
-        m_IsAiming = false;
+        //m_IsAiming = false;
         m_TimeLastGrounded = Time.time;
     }
 
@@ -145,7 +145,14 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         bool justLanded = ProcessJump();
 
         // Get the reference frame for the input
-        var rawInput = new Vector3(MoveX.Value, 0, MoveZ.Value);
+        //Vector3 fwdDir = Camera.transform.forward;
+        //Vector3 rightDir = Camera.transform.right;
+        //fwdDir.y = 0;
+        //rightDir.y = 0;
+        //fwdDir.Normalize();
+        //rightDir.Normalize();
+
+        var rawInput = /*fwdDir * MoveZ.Value + rightDir * MoveX.Value*/new Vector3(MoveX.Value, 0, MoveZ.Value);
         var inputFrame = GetInputFrame(Vector3.Dot(rawInput, m_LastRawInput) < 0.8f);
         m_LastRawInput = rawInput;
 
@@ -157,16 +164,22 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         // Compute the new velocity and move the player, but only if not mid-jump
         if (!m_IsJumping)
         {
-            m_IsSprinting = Sprint.Value > 0.5f && !m_IsAiming;
+            m_IsSprinting = Sprint.Value > sprintThrehold && !Strafe;
             var desiredVelocity = m_LastInput * (m_IsSprinting ? SprintSpeed : Speed);
-            var damping = justLanded ? 0 : Damping;
-            if (Vector3.Angle(m_CurrentVelocityXZ, desiredVelocity) < 100)
-                m_CurrentVelocityXZ = Vector3.Slerp(
+
+            //Use this for now.
+            m_CurrentVelocityXZ = Vector3.Slerp(
                     m_CurrentVelocityXZ, desiredVelocity,
-                    Damper.Damp(1, damping, Time.deltaTime));
-            else
-                m_CurrentVelocityXZ += Damper.Damp(
-                    desiredVelocity - m_CurrentVelocityXZ, damping, Time.deltaTime);
+                    1);
+
+            //var damping = justLanded ? 0 : Damping;
+            //if (Vector3.Angle(m_CurrentVelocityXZ, desiredVelocity) < 100)
+            //    m_CurrentVelocityXZ = Vector3.Slerp(
+            //        m_CurrentVelocityXZ, desiredVelocity,
+            //        Damper.Damp(1, damping, Time.deltaTime));
+            //else
+            //    m_CurrentVelocityXZ += Damper.Damp(
+            //        desiredVelocity - m_CurrentVelocityXZ, damping, Time.deltaTime);
         }
 
         // Apply the position change

@@ -27,11 +27,12 @@ public class My_AnimatorController : MonoBehaviour
     [Tooltip("Never speed up the sprint animation more than this, to avoid absurdly fast movement")]
     public float MaxSprintScale = 1.4f;
 
+    [Tooltip("Default is 0.2, I don't know what is this for?")]
+    public float k_IdleThreshold = 0.2f;
+
     public My_AimController m_AimController;
     //[Tooltip("Scale factor for the overall speed of the jump animation")]
     //public float JumpAnimationScale = 0.65f;
-
-    private const float k_IdleThreshold = 0.2f;
 
     private My_PlayerController m_Controller;
     private AnimationParams m_AnimationParams;
@@ -81,7 +82,7 @@ public class My_AnimatorController : MonoBehaviour
 
         // Set the normalized direction of motion and scale the animation speed to match motion speed
         m_AnimationParams.Direction = speed > k_IdleThreshold ? vel / speed : Vector3.zero;
-        m_AnimationParams.MotionScale = isWalking ? speed / NormalWalkSpeed : 0;//1;
+        m_AnimationParams.MotionScale = isWalking ? speed / NormalWalkSpeed : 1;
         //m_AnimationParams.JumpScale = JumpAnimationScale * jumpAnimationScale;
 
         // We scale the sprint animation speed to loosely match the actual speed, but we cheat

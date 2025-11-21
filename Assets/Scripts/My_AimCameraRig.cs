@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.Cinemachine.Samples;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -8,16 +7,12 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
 {
     public InputAxis AimMode = InputAxis.DefaultMomentary;
 
-    SimplePlayerAimController AimController;
+    My_AimController AimController;
     CinemachineVirtualCameraBase AimCamera;
     CinemachineVirtualCameraBase FreeCamera;
 
     bool IsAiming => AimMode.Value > 0.5f;
 
-    /// Report the available input axes to the input axis controller.
-    /// We use the Input Axis Controller because it works with both the Input package
-    /// and the Legacy input system.  This is sample code and we
-    /// want it to work everywhere.
     void IInputAxisOwner.GetInputAxes(List<IInputAxisOwner.AxisDescriptor> axes)
     {
         axes.Add(new() { DrivenAxis = () => ref AimMode, Name = "Aim" });
@@ -44,7 +39,7 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
                 AimCamera = cam;
                 var player = AimCamera.Follow;
                 if (player != null)
-                    AimController = player.GetComponentInChildren<SimplePlayerAimController>();
+                    AimController = player.GetComponentInChildren<My_AimController>();
             }
             else if (FreeCamera == null)
                 FreeCamera = cam;
@@ -66,8 +61,8 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
             // Set the mode of the player aim controller.
             // We want the player rotation to be copuled to the camera when aiming, otherwise not.
             AimController.PlayerRotation = IsAiming
-                ? SimplePlayerAimController.CouplingMode.Coupled
-                : SimplePlayerAimController.CouplingMode.Decoupled;
+                ? My_AimController.CouplingMode.Coupled
+                : My_AimController.CouplingMode.Decoupled;
             AimController.RecenterPlayer();
         }
         return newCam;

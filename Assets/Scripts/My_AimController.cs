@@ -4,7 +4,7 @@ using Unity.Cinemachine.Samples;
 using UnityEngine;
 using static Unity.Cinemachine.Samples.SimplePlayerAimController;
 
-public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
+public class My_AimController : MonoBehaviour, IInputAxisOwner
 {
     public enum CouplingMode { Coupled, CoupledWhenMoving, Decoupled }
 
@@ -113,6 +113,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
     // This is called by the player controller before it updates its own rotation.
     void UpdatePlayerRotation()
     {
+        //Debug.LogWarning("Sup!!");
         var t = transform;
         t.localRotation = Quaternion.Euler(VerticalLook.Value, HorizontalLook.Value, 0);
         m_DesiredWorldRotation = t.rotation;
@@ -121,6 +122,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
             case CouplingMode.Coupled:
                 {
                     m_Controller.SetStrafeMode(true);
+                    m_Controller.IsAiming = true;
                     RecenterPlayer();
                     break;
                 }
@@ -136,6 +138,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
             case CouplingMode.Decoupled:
                 {
                     m_Controller.SetStrafeMode(false);
+                    m_Controller.IsAiming = false;
                     break;
                 }
         }
@@ -148,6 +151,7 @@ public class My_CoreAimController : MonoBehaviour, IInputAxisOwner
     {
         if (PlayerRotation == CouplingMode.Decoupled)
         {
+            //Debug.LogWarning("Post");
             // After player has been rotated, we subtract any rotation change
             // from our own transform, to maintain our world rotation
             transform.rotation = m_DesiredWorldRotation;

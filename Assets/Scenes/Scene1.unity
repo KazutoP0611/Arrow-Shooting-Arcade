@@ -837,19 +837,6 @@ MonoBehaviour:
       Driver:
         AccelTime: 0
         DecelTime: 0
-    - Name: Jump
-      Owner: {fileID: 611505599}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 6539296782897260151, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
-        Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
     - Name: Sprint
       Owner: {fileID: 611505599}
       Enabled: 1
@@ -993,7 +980,7 @@ Transform:
   m_GameObject: {fileID: 887440728}
   serializedVersion: 2
   m_LocalRotation: {x: 0.052030917, y: 0, z: 0, w: 0.9986455}
-  m_LocalPosition: {x: 0.553536, y: 1.5177131, z: -3.351198}
+  m_LocalPosition: {x: 0.41000003, y: 1.5461192, z: -1.1968048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1073,10 +1060,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.553536, y: -0.2021505, z: 0}
-  VerticalArmLength: 0.3
-  CameraSide: 1
-  CameraDistance: 3.44
+  ShoulderOffset: {x: 0.5, y: -0.2, z: 0}
+  VerticalArmLength: 0.55
+  CameraSide: 0.91
+  CameraDistance: 1.3
   AvoidObstacles:
     Enabled: 1
     CollisionFilter:
@@ -1256,7 +1243,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2678,6 +2665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543450652762141756}
   - component: {fileID: 5866666020968246854}
+  - component: {fileID: 5866666020968246855}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -4508,6 +4496,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5866666020968246855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149027122822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8d521e0b39abd4fadcd228edffb830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalWalkSpeed: 1.7
+  NormalSprintSpeed: 5
+  MaxSprintScale: 1.4
+  m_AimController: {fileID: 1337133106}
 --- !u!4 &5901452234860947135
 Transform:
   m_ObjectHideFlags: 0

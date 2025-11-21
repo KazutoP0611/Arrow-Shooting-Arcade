@@ -48,7 +48,7 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     {
         axes.Add(new() { DrivenAxis = () => ref MoveX, Name = "Move X", Hint = IInputAxisOwner.AxisDescriptor.Hints.X });
         axes.Add(new() { DrivenAxis = () => ref MoveZ, Name = "Move Z", Hint = IInputAxisOwner.AxisDescriptor.Hints.Y });
-        axes.Add(new() { DrivenAxis = () => ref Jump, Name = "Jump" });
+        //axes.Add(new() { DrivenAxis = () => ref Jump, Name = "Jump" });
         axes.Add(new() { DrivenAxis = () => ref Sprint, Name = "Sprint" });
     }
 
@@ -56,7 +56,7 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     {
         MoveX.Validate();
         MoveZ.Validate();
-        Jump.Validate();
+        //Jump.Validate();
         Sprint.Validate();
     }
 
@@ -102,7 +102,8 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     float m_CurrentVelocityY;
     bool m_IsSprinting;
     bool m_IsJumping;
-    UnityEngine.CharacterController m_Controller; // optional
+    bool m_IsAiming;
+    CharacterController m_Controller; // optional
 
     // These are part of a strategy to combat input gimbal lock when controlling a player
     // that can move freely on surfaces that go upside-down relative to the camera.
@@ -119,6 +120,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
     public bool IsSprinting => m_IsSprinting;
     public bool IsJumping => m_IsJumping;
+    public bool IsAiming { get { return m_IsAiming; } set { m_IsAiming = value; } }
     public Camera Camera => CameraOverride == null ? Camera.main : CameraOverride;
 
     public bool IsGrounded() => GetDistanceFromGround(transform.position, UpDirection, 10) < 0.01f;
@@ -131,6 +133,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         m_CurrentVelocityY = 0;
         m_IsSprinting = false;
         m_IsJumping = false;
+        m_IsAiming = false;
         m_TimeLastGrounded = Time.time;
     }
 
@@ -154,7 +157,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         // Compute the new velocity and move the player, but only if not mid-jump
         if (!m_IsJumping)
         {
-            m_IsSprinting = Sprint.Value > 0.5f;
+            m_IsSprinting = Sprint.Value > 0.5f && !m_IsAiming;
             var desiredVelocity = m_LastInput * (m_IsSprinting ? SprintSpeed : Speed);
             var damping = justLanded ? 0 : Damping;
             if (Vector3.Angle(m_CurrentVelocityXZ, desiredVelocity) < 100)
@@ -337,13 +340,12 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     float GetDistanceFromGround(Vector3 pos, Vector3 up, float max)
     {
         float kExtraHeight = m_Controller == null ? 2 : 0; // start a little above the player in case it's moving down fast
-        if (UnityEngine.Physics.Raycast(pos + up * kExtraHeight, -up, out var hit,
+        if (Physics.Raycast(pos + up * kExtraHeight, -up, out var hit,
                 max + kExtraHeight, GroundLayers, QueryTriggerInteraction.Ignore))
             return hit.distance - kExtraHeight;
         return max + 1;
     }
 
-    // ITeleportable implementation
     public void Teleport(Vector3 newPos, Quaternion newRot)
     {
         if (m_Controller != null)

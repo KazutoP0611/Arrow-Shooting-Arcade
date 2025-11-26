@@ -39,6 +39,11 @@ public class My_AnimatorController : MonoBehaviour
     private Vector3 m_PreviousPosition;
     private Animator animator;
 
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void Start()
     {
         m_PreviousPosition = transform.position;

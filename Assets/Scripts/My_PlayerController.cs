@@ -24,7 +24,10 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     public Action<Vector3, float> PostUpdate;
     public Action StartJump;
     public Action EndJump;
+
+    #region My modification
     public Action ShootAnimationAction;
+    #endregion
 
     [Header("Input Axes")]
     [Tooltip("X Axis movement.  Value is -1..1.  Controls the sideways movement")]
@@ -112,7 +115,6 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     float m_CurrentVelocityY;
     bool m_IsSprinting;
     bool m_IsJumping;
-    bool m_IsAiming;
     CharacterController m_Controller; // optional
 
     // These are part of a strategy to combat input gimbal lock when controlling a player
@@ -130,17 +132,24 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
     public bool IsSprinting => m_IsSprinting;
     public bool IsJumping => m_IsJumping;
-    public bool IsAiming { get { return m_IsAiming; } set { m_IsAiming = value; } }
     public Camera Camera => CameraOverride == null ? Camera.main : CameraOverride;
-
-    public Vector2 moveVector;
-
     public bool IsGrounded() => GetDistanceFromGround(transform.position, UpDirection, 10) < 0.01f;
+
+    #region My Modification
+    public bool IsAiming { get { return m_IsAiming; } set { m_IsAiming = value; } }
+
+    private bool m_IsAiming;
+    private ArrowShooter arrowShooter;
+    #endregion
 
     #region My Modification
     private void Awake()
     {
         inputAction = new My_CinemachineDefaultInputActions();
+
+        TryGetComponent(out arrowShooter);
+        if (arrowShooter == null)
+            Debug.LogWarning("Arrow Shooter have not been set, can not instantiate prefab right now.");
     }
     #endregion
 
@@ -231,6 +240,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
     void ShootHandle()
     {
+        arrowShooter.ShootArrow();
         ShootAnimationAction?.Invoke();
     }
 

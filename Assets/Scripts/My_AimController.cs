@@ -122,7 +122,6 @@ public class My_AimController : MonoBehaviour, IInputAxisOwner
             case CouplingMode.Coupled:
                 {
                     m_Controller.SetStrafeMode(true);
-                    //m_Controller.IsAiming = true;
                     RecenterPlayer();
                     break;
                 }
@@ -138,7 +137,6 @@ public class My_AimController : MonoBehaviour, IInputAxisOwner
             case CouplingMode.Decoupled:
                 {
                     m_Controller.SetStrafeMode(false);
-                    //m_Controller.IsAiming = false;
                     break;
                 }
         }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.Cinemachine.Samples;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using static Unity.Cinemachine.Samples.SimplePlayerController;
 using static UnityEngine.LightAnchor;
 
@@ -22,6 +24,7 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     public Action<Vector3, float> PostUpdate;
     public Action StartJump;
     public Action EndJump;
+    public Action ShootAnimationAction;
 
     [Header("Input Axes")]
     [Tooltip("X Axis movement.  Value is -1..1.  Controls the sideways movement")]
@@ -37,6 +40,11 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     public InputAxis Sprint = InputAxis.DefaultMomentary;
     public float sprintThrehold = 0.5f;
 
+    //[Tooltip("Shoot")]
+    //public InputAxis Aim = InputAxis.DefaultMomentary;
+
+    public My_CinemachineDefaultInputActions inputAction;
+
     [Header("Events")]
     [Tooltip("This event is sent when the player lands after a jump.")]
     public UnityEvent Landed = new();
@@ -51,6 +59,7 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
         axes.Add(new() { DrivenAxis = () => ref MoveZ, Name = "Move Z", Hint = IInputAxisOwner.AxisDescriptor.Hints.Y });
         //axes.Add(new() { DrivenAxis = () => ref Jump, Name = "Jump" });
         axes.Add(new() { DrivenAxis = () => ref Sprint, Name = "Sprint" });
+        //axes.Add(new() { DrivenAxis = () => ref Aim, Name = "Aim" });
     }
 
     protected virtual void OnValidate()
@@ -103,7 +112,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     float m_CurrentVelocityY;
     bool m_IsSprinting;
     bool m_IsJumping;
-    //bool m_IsAiming;
+    bool m_IsAiming;
     CharacterController m_Controller; // optional
 
     // These are part of a strategy to combat input gimbal lock when controlling a player
@@ -121,21 +130,35 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
     public bool IsSprinting => m_IsSprinting;
     public bool IsJumping => m_IsJumping;
+    public bool IsAiming { get { return m_IsAiming; } set { m_IsAiming = value; } }
     public Camera Camera => CameraOverride == null ? Camera.main : CameraOverride;
+
+    public Vector2 moveVector;
 
     public bool IsGrounded() => GetDistanceFromGround(transform.position, UpDirection, 10) < 0.01f;
 
-    // Note that m_Controller is an optional component: we'll use it if it's there.
-    void Start() => TryGetComponent(out m_Controller);
+    #region My Modification
+    private void Awake()
+    {
+        inputAction = new My_CinemachineDefaultInputActions();
+    }
+    #endregion
 
     private void OnEnable()
     {
+        inputAction.Enable();
+
         m_CurrentVelocityY = 0;
         m_IsSprinting = false;
         m_IsJumping = false;
-        //m_IsAiming = false;
+        m_IsAiming = false;
         m_TimeLastGrounded = Time.time;
+
+        inputAction.CMDefault.Aim.canceled += value => ShootHandle();
     }
+
+    // Note that m_Controller is an optional component: we'll use it if it's there.
+    void Start() => TryGetComponent(out m_Controller);
 
     void Update()
     {
@@ -204,6 +227,11 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             vel.y = m_CurrentVelocityY;
             PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
+    }
+
+    void ShootHandle()
+    {
+        ShootAnimationAction?.Invoke();
     }
 
     Vector3 UpDirection => UpMode == UpModes.World ? Vector3.up : transform.up;

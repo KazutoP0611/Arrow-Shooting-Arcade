@@ -37,6 +37,7 @@ public class My_AnimatorController : MonoBehaviour
     private My_PlayerController m_Controller;
     private AnimationParams m_AnimationParams;
     private Vector3 m_PreviousPosition;
+    private Animator animator;
 
     private void Start()
     {
@@ -52,6 +53,13 @@ public class My_AnimatorController : MonoBehaviour
             m_Controller.StartJump += () => m_AnimationParams.JumpTriggered = true;
             m_Controller.EndJump += () => m_AnimationParams.LandTriggered = true;
             m_Controller.PostUpdate += (vel, jumpAnimationScale) => UpdateAnimationState(vel, jumpAnimationScale);
+
+            //My modification
+            m_Controller.ShootAnimationAction += () => {
+                animator.SetTrigger("Shoot");
+                Debug.Log("Arrow Shoot!!");
+            };
+            //End My modification
         }
     }
 
@@ -92,7 +100,24 @@ public class My_AnimatorController : MonoBehaviour
                 ? speed / NormalSprintSpeed
                 : Mathf.Min(MaxSprintScale, 1 + (speed - NormalSprintSpeed) / (3 * NormalSprintSpeed));
 
+        #region My Animation Modification
+        //My modification
         m_AnimationParams.IsAiming = m_AimController.PlayerRotation == My_AimController.CouplingMode.Coupled;
+        m_Controller.IsAiming = m_AnimationParams.IsAiming;
+
+        //if (m_AnimationParams.IsAiming)
+        //{
+        //    if (Input.GetButtonUp("Fire1"))
+        //        m_AnimationParams.Shoot = true;
+        //}
+        //else
+        //{
+        //    m_AnimationParams.Shoot = false;
+        //}
+
+        //Debug.LogWarning($"Shooting {m_AnimationParams.Shoot}");
+        //End My modification
+        #endregion
 
         UpdateAnimation(m_AnimationParams);
 
@@ -107,10 +132,13 @@ public class My_AnimatorController : MonoBehaviour
 
     protected virtual void UpdateAnimation(AnimationParams animationParams)
     {
-        if (!TryGetComponent(out Animator animator))
+        if (animator == null)
         {
-            Debug.LogError("SimplePlayerAnimator: An Animator component is required");
-            return;
+            if (!TryGetComponent(out animator))
+            {
+                Debug.LogError("SimplePlayerAnimator: An Animator component is required");
+                return;
+            }
         }
 
         animator.SetFloat("DirX", animationParams.Direction.x);

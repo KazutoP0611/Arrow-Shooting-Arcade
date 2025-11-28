@@ -62,7 +62,7 @@ public class My_AnimatorController : MonoBehaviour
             //My modification
             m_Controller.ShootAnimationAction += () => {
                 animator.SetTrigger("Shoot");
-                Debug.Log("Arrow Shoot!!");
+                //Debug.Log("Arrow Shoot!!");
             };
             //End My modification
         }

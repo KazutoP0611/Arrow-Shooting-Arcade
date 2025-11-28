@@ -1,26 +1,24 @@
+using Unity.Cinemachine.Samples;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ArrowShooter : MonoBehaviour
 {
+    [Header("Aim Manager")]
+    [SerializeField] private AimTargetManager aimTargetManager;
+
+    [Header("Aim Details")]
     [SerializeField] private float arrowForce;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private GameObject arrowPrefab;
 
-    private Vector3 shootDirection;
-
     public void ShootArrow()
     {
-        GameObject arrowRigid = Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
+        Vector3 aimDirection = aimTargetManager.GetAimDirection(shootPoint.position, transform.forward).normalized;
+        var rot = Quaternion.LookRotation(aimDirection, transform.up);
 
-        Vector3 tempDirection = shootPoint.position;
-        tempDirection.y = Camera.main.transform.position.y;
-        shootDirection = Camera.main.transform.forward - tempDirection;
-        arrowRigid.GetComponent<Rigidbody>().AddForce(shootPoint.forward * arrowForce, ForceMode.Impulse);
-    }
+        GameObject arrowRigid = Instantiate(arrowPrefab, shootPoint.position, rot);
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(shootPoint.position, shootDirection);
+        //arrowRigid.GetComponent<Rigidbody>().AddForce(aimDirection * arrowForce, ForceMode.Impulse);
     }
 }

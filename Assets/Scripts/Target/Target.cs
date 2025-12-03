@@ -14,9 +14,9 @@ public class Target : MonoBehaviour
         trashCollector = new List<GameObject>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnHit()
     {
-        
+        Debug.LogWarning($"Hit!!");
     }
 
     private void OnDrawGizmos()

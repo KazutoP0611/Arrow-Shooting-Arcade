@@ -31,6 +31,8 @@ public class ArrowController : MonoBehaviour
                 //t.position = (hitInfo.point - transform.position) + new Vector3(0, 0, HitOffset);
                 t.position = hitInfo.point;
                 m_Speed = 0;
+                Target target = hitInfo.collider.GetComponentInParent<Target>();
+                target?.OnHit();
             }
             var deltaPos = m_Speed * Time.deltaTime;
             t.position += deltaPos * t.forward;

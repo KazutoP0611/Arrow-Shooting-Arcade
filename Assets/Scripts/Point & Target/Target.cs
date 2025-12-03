@@ -4,8 +4,8 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public float radius;
-    public GameObject originPointObj;
-    public GameObject hitPointObj;
+
+    [SerializeField] private int targetScore;
 
     private List<GameObject> trashCollector;
 
@@ -16,7 +16,7 @@ public class Target : MonoBehaviour
 
     public void OnHit()
     {
-        Debug.LogWarning($"Hit!!");
+         PointManager.instance.ManagePoint(targetScore, transform.position);
     }
 
     private void OnDrawGizmos()

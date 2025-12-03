@@ -28,8 +28,8 @@ public class ArrowController : MonoBehaviour
                     QueryTriggerInteraction.Ignore)
                 )
             {
-                t.position = (hitInfo.point - transform.forward) + new Vector3(0, 0, HitOffset);
-                //t.position = hitInfo.point;
+                //t.position = (hitInfo.point - transform.position) + new Vector3(0, 0, HitOffset);
+                t.position = hitInfo.point;
                 m_Speed = 0;
             }
             var deltaPos = m_Speed * Time.deltaTime;

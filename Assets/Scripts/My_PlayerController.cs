@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using static Unity.Cinemachine.Samples.SimplePlayerController;
 using static UnityEngine.LightAnchor;
 
@@ -217,6 +218,11 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         // Apply the position change
         ApplyMotion();
 
+        #region My implement
+        //My implement
+        CheckIsAiming();
+        #endregion
+
         // If not strafing, rotate the player to face movement direction
         if (!Strafe && m_CurrentVelocityXZ.sqrMagnitude > 0.001f)
         {
@@ -238,7 +244,15 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         }
     }
 
-    void ShootHandle()
+    private void CheckIsAiming()
+    {
+        if (inputAction.CMDefault.Aim.inProgress)
+        {
+            Debug.DrawLine(arrowShooter.GetShootPoint.position, arrowShooter.aimTargetManager.transform.position);
+        }
+    }
+
+    private void ShootHandle()
     {
         arrowShooter.ShootArrow();
         ShootAnimationAction?.Invoke();

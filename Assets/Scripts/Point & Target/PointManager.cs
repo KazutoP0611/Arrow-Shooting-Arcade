@@ -17,7 +17,7 @@ public class PointManager : MonoBehaviour
 
     public void ManagePoint(int scorePoint, Vector3 spawnPoint)
     {
-        ScoreTextController textController = Instantiate(textPrefab, spawnPoint, Quaternion.identity).GetComponent<ScoreTextController>();
+        ScoreTextController textController = Instantiate(textPrefab, spawnPoint, Quaternion.LookRotation(Camera.main.transform.forward)).GetComponent<ScoreTextController>();
         if (scorePoint > 0)
             textController.SetText($"+{scorePoint}", Color.green);
         else

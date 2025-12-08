@@ -23,7 +23,11 @@ public class ScoreTextController : MonoBehaviour
     private void Update()
     {
         time += Time.deltaTime;
+        float t = time / transformInSecs;
         transform.position = Vector3.Lerp(startPosition, targetPoint, time / transformInSecs);
+
+        if (t >= 1)
+            Destroy(gameObject);
     }
 
     public void SetText(string textString, Color color)

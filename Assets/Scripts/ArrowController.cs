@@ -2,12 +2,27 @@ using UnityEngine;
 
 public class ArrowController : MonoBehaviour
 {
+    #region Move Details
+    [Header("Move Details")]
+    [SerializeField] private bool move;
     [SerializeField] private float Speed;
     [SerializeField] private float CheckDistance;
     [SerializeField] private float HitOffset;
-    [SerializeField] private LayerMask CollisionLayers;
+    #endregion
 
+    #region Hit Details
+    [Header("Hit Details")]
+    [SerializeField] private float destroyArrowAfterHitTarget;
+    [SerializeField] private LayerMask CollisionLayers;
+    #endregion
+
+    private Rigidbody rb;
     private float m_Speed;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void OnEnable()
     {
@@ -19,7 +34,23 @@ public class ArrowController : MonoBehaviour
         if (m_Speed > 0)
         {
             var t = transform;
-            if (Physics.Raycast(
+
+            CheckHitTarget(t);
+
+            if (move)
+                MoveArrow(t);
+        }
+    }
+
+    private void MoveArrow(Transform t)
+    {
+        var deltaPos = m_Speed * Time.deltaTime;
+        t.position += deltaPos * t.forward;
+    }
+
+    private void CheckHitTarget(Transform t)
+    {
+        if (Physics.Raycast(
                     t.position,
                     t.forward,
                     out var hitInfo,
@@ -27,15 +58,24 @@ public class ArrowController : MonoBehaviour
                     CollisionLayers,
                     QueryTriggerInteraction.Ignore)
                 )
+        {
+            //t.position = (hitInfo.point - transform.position) + new Vector3(0, 0, HitOffset);
+            t.position = hitInfo.point;
+            m_Speed = 0;
+            rb.useGravity = false;
+            rb.isKinematic = true;
+
+            Target target = hitInfo.collider.GetComponentInParent<Target>();
+
+            if (target)
             {
-                //t.position = (hitInfo.point - transform.position) + new Vector3(0, 0, HitOffset);
-                t.position = hitInfo.point;
-                m_Speed = 0;
-                Target target = hitInfo.collider.GetComponentInParent<Target>();
-                target?.OnHit();
+                target.OnHit();
+                Destroy(gameObject, destroyArrowAfterHitTarget);
             }
-            var deltaPos = m_Speed * Time.deltaTime;
-            t.position += deltaPos * t.forward;
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

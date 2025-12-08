@@ -164,6 +164,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         m_IsAiming = false;
         m_TimeLastGrounded = Time.time;
 
+        //inputAction.CMDefault.Aim.performed += value => AimHandle();
         inputAction.CMDefault.Aim.canceled += value => ShootHandle();
     }
 
@@ -247,9 +248,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     private void CheckIsAiming()
     {
         if (inputAction.CMDefault.Aim.inProgress)
-        {
-            Debug.DrawLine(arrowShooter.GetShootPoint.position, arrowShooter.aimTargetManager.transform.position);
-        }
+            arrowShooter.Aiming();
     }
 
     private void ShootHandle()

@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  targetScore: -10
+  targetScore: 10
 --- !u!1 &174955343
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,7 +1554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimTargetManager: {fileID: 3691321984404232504}
-  arrowForce: 50
+  arrowForce: 120
+  aimTime: 1.6
   shootPoint: {fileID: 133681509}
   arrowPrefab: {fileID: 8447196329967727457, guid: c036a010a59ed1d4b907186ae6b1c0ba, type: 3}
 --- !u!1 &671280984

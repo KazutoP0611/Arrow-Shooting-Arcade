@@ -217,12 +217,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133681508}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.44380337, y: 0.4067206, z: -0.5784273, w: 0.5504897}
-  m_LocalPosition: {x: -0.233, y: -0.126, z: -0.121}
+  m_LocalRotation: {x: 0.4483568, y: 0.6212071, z: 0.39206448, w: -0.5092773}
+  m_LocalPosition: {x: 0.0535, y: 0.089, z: 0.0658}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1446314242963271709}
+  m_Father: {fileID: 6502182838950462996}
   m_LocalEulerAnglesHint: {x: -1.037, y: 74.021, z: -93.617}
 --- !u!1 &150316350
 GameObject:
@@ -1261,6 +1261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e493418c5db398489a81d50312ed23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointText: {fileID: 1328390455}
   textPrefab: {fileID: 5973596230781064791, guid: 12f1dd1b89277c347b190c418bc5a4d2, type: 3}
 --- !u!4 &467553899
 Transform:
@@ -1554,7 +1555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimTargetManager: {fileID: 3691321984404232504}
-  arrowForce: 120
+  arrowForce: 50
   aimTime: 1.6
   shootPoint: {fileID: 133681509}
   arrowPrefab: {fileID: 8447196329967727457, guid: c036a010a59ed1d4b907186ae6b1c0ba, type: 3}
@@ -3363,6 +3364,7 @@ GameObject:
   - component: {fileID: 2077331213}
   - component: {fileID: 2077331215}
   - component: {fileID: 2077331214}
+  - component: {fileID: 2077331216}
   m_Layer: 0
   m_Name: FreeCam
   m_TagString: Untagged
@@ -3454,6 +3456,19 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 8
+--- !u!114 &2077331216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077331212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: 0
 --- !u!1 &9171099614174510
 GameObject:
   m_ObjectHideFlags: 0
@@ -4250,7 +4265,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4860483837983790959}
-  - {fileID: 133681509}
   m_Father: {fileID: 6502182838950462996}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1564860332863835620
@@ -6633,6 +6647,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 133681509}
   - {fileID: 1446314242963271709}
   - {fileID: 1330755669769738299}
   - {fileID: 8255111156908500031}

@@ -35,12 +35,15 @@ public class ArrowShooter : MonoBehaviour
 
     public void ShootArrow()
     {
-        Debug.LogWarning($"Shoot!\n");
+        //Debug.LogWarning($"Shoot!\n");
         aimingDirection = aimTargetManager.GetAimDirection(shootPoint.position, Camera.main.transform.forward).normalized;
 
         var rot = Quaternion.LookRotation(aimingDirection, Vector3.up);
         GameObject arrowRigid = Instantiate(arrowPrefab, shootPoint.position, rot);
-        arrowRigid.GetComponent<Rigidbody>().AddForce(arrowRigid.transform.forward.normalized * arrowForce * aimValue, ForceMode.Impulse);
+
+        Vector3 shootForce = arrowRigid.transform.forward.normalized * arrowForce * aimValue;
+        //Debug.LogWarning(shootForce);
+        arrowRigid.GetComponent<Rigidbody>().AddForce(shootForce, ForceMode.Impulse);
 
         ResetAimValue();
     }

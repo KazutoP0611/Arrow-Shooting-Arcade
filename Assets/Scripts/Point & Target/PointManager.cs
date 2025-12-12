@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -5,7 +6,12 @@ public class PointManager : MonoBehaviour
 {
     public static PointManager instance { get; private set; }
 
+    [Header("Point Display Details")]
+    [SerializeField] private TextMeshProUGUI pointText;
+
     [SerializeField] private GameObject textPrefab;
+
+    private int currentScore;
 
     private void Awake()
     {
@@ -15,12 +21,26 @@ public class PointManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        currentScore = 0;
+        UpdateScore();
+    }
+
     public void ManagePoint(int scorePoint, Vector3 spawnPoint)
     {
         ScoreTextController textController = Instantiate(textPrefab, spawnPoint, Quaternion.LookRotation(Camera.main.transform.forward)).GetComponent<ScoreTextController>();
         if (scorePoint > 0)
-            textController.SetText($"+{scorePoint}", Color.green);
+            textController.SetText(scorePoint, Color.green, OnScoreAnimatedFinish);
         else
-            textController.SetText($"{scorePoint}", Color.red);
+            textController.SetText(scorePoint, Color.red, OnScoreAnimatedFinish);
     }
+
+    private void OnScoreAnimatedFinish(int score)
+    {
+        currentScore += score;
+        UpdateScore();
+    }
+
+    private void UpdateScore() => pointText.text = currentScore.ToString();
 }

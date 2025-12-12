@@ -1,8 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class ScoreTextController : MonoBehaviour
 {
+    //public delegate void OnAnimatedFinished(int score);
+    //public OnAnimatedFinished onAnimtedFinished;
+
     [Header("Transform Details")]
     [SerializeField] private Vector3 goToDirection;
     [SerializeField] private float transformInSecs;
@@ -13,6 +17,9 @@ public class ScoreTextController : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 targetPoint;
     private float time;
+
+    private int score;
+    private Action<int> onAnimtedFinished;
 
     private void Start()
     {
@@ -27,12 +34,17 @@ public class ScoreTextController : MonoBehaviour
         transform.position = Vector3.Lerp(startPosition, targetPoint, time / transformInSecs);
 
         if (t >= 1)
+        {
+            onAnimtedFinished?.Invoke(score);
             Destroy(gameObject);
+        }
     }
 
-    public void SetText(string textString, Color color)
+    public void SetText(int score, Color color, Action<int> OnTextAnimatedFinish)
     {
+        this.score = score;
+        text.text = score.ToString();
         text.color = color;
-        text.text = textString;
+        onAnimtedFinished = OnTextAnimatedFinish;
     }
 }

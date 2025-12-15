@@ -168,6 +168,11 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         inputAction.CMDefault.Aim.canceled += value => ShootHandle();
     }
 
+    private void OnDisable()
+    {
+        inputAction.Disable();
+    }
+
     // Note that m_Controller is an optional component: we'll use it if it's there.
     void Start() => TryGetComponent(out m_Controller);
 
@@ -257,6 +262,14 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
     {
         arrowShooter.ShootArrow();
         ShootAnimationAction?.Invoke();
+    }
+
+    public void EnableInputAction(bool enable)
+    {
+        if (enable)
+            inputAction.Enable();
+        else
+            inputAction.Disable();
     }
 
     Vector3 UpDirection => UpMode == UpModes.World ? Vector3.up : transform.up;

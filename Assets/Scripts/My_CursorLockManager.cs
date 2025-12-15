@@ -22,8 +22,13 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     }
 
     void OnValidate() => CursorLock.Validate();
-    void OnEnable() => LockCursor();
+    //void OnEnable() => LockCursor();
     void OnDisable() => UnlockCursor();
+
+    private void Start()
+    {
+        LockCursor();
+    }
 
     void Update()
     {
@@ -44,13 +49,13 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
         if (enabled)
         {
             Cursor.lockState = CursorLockMode.Locked;
-            OnCursorLocked.Invoke();
+            OnCursorLocked?.Invoke();
         }
     }
 
     public void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
-        OnCursorUnlocked.Invoke();
+        OnCursorUnlocked?.Invoke();
     }
 }

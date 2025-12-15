@@ -5,7 +5,8 @@ public class Target : MonoBehaviour
 {
     public float radius;
 
-    [SerializeField] private int targetScore;
+    [SerializeField] private int maxTaregetScore;
+    [SerializeField] private AudioClip hitSound;
 
     private List<GameObject> trashCollector;
 
@@ -14,19 +15,24 @@ public class Target : MonoBehaviour
         trashCollector = new List<GameObject>();
     }
 
-    public void OnHit(Vector3 hitPoint)
+    public void OnHit(Vector3 hitPoint, GameObject arrow)
     {
+        AudioSource.PlayClipAtPoint(hitSound, transform.position);
+
         float hitLength = Vector3.Distance(hitPoint, transform.position);
         //Debug.LogWarning(hitLength);
         int point = 0;
         if (hitLength < 0.07)
-            point = targetScore;
+            point = maxTaregetScore;
         else if (hitLength < 0.3)
-            point = targetScore / 2;
+            point = maxTaregetScore / 2;
         else
-            point = targetScore / 5;
+            point = maxTaregetScore / 5;
 
         PointManager.instance.ManagePoint(point, transform.position);
+
+        Destroy(arrow);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

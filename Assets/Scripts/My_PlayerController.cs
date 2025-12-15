@@ -164,7 +164,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         m_IsAiming = false;
         m_TimeLastGrounded = Time.time;
 
-        //inputAction.CMDefault.Aim.performed += value => AimHandle();
+        inputAction.CMDefault.Aim.started += value => StartedAiming();
         inputAction.CMDefault.Aim.canceled += value => ShootHandle();
     }
 
@@ -244,6 +244,8 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
     }
+
+    private void StartedAiming() => arrowShooter.StartedAiming();
 
     private void CheckIsAiming()
     {

@@ -13,6 +13,10 @@ public class ArrowShooter : MonoBehaviour
     [SerializeField] private Transform shootPoint;
     [SerializeField] private GameObject arrowPrefab;
 
+    [Header("Sound Details")]
+    [SerializeField] private AudioSource bowAudioSource;
+    [SerializeField] private AudioClip bowReleaseSound;
+
     [Header("Debug Only")]
     public Transform GetShootPoint { get => shootPoint; }
     public Vector3 AimingDirection { get => aimingDirection; }
@@ -26,11 +30,12 @@ public class ArrowShooter : MonoBehaviour
         ResetAimValue();
     }
 
+    public void StartedAiming() => bowAudioSource.Play(0);
+
     public void Aiming()
     {
         time += Time.deltaTime;
         aimValue = Mathf.Clamp01(time / aimTime);
-        //Debug.LogWarning($"Aim Value is : {aimValue}\n");
     }
 
     public void ShootArrow()
@@ -45,11 +50,14 @@ public class ArrowShooter : MonoBehaviour
         //Debug.LogWarning(shootForce);
         arrowRigid.GetComponent<Rigidbody>().AddForce(shootForce, ForceMode.Impulse);
 
+        AudioSource.PlayClipAtPoint(bowReleaseSound, shootPoint.position);
+
         ResetAimValue();
     }
 
     private void ResetAimValue()
     {
+        bowAudioSource.Stop();
         aimValue = 0.0f;
         time = 0.0f;
     }

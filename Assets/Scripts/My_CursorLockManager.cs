@@ -11,7 +11,8 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     public UnityEvent OnCursorUnlocked = new();
     public UnityEvent OnCursorOnGameEnded = new();
 
-    bool m_IsTriggered;
+    private bool m_IsTriggered;
+    private bool canPushEcs = true;
 
     public void GetInputAxes(List<IInputAxisOwner.AxisDescriptor> axes)
     {
@@ -36,7 +37,7 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     {
         if (CursorLock.Value == 0)
             m_IsTriggered = false;
-        else if (!m_IsTriggered)
+        else if (!m_IsTriggered && canPushEcs)
         {
             m_IsTriggered = true;
             if (Cursor.lockState == CursorLockMode.None)
@@ -49,6 +50,7 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     public void CursorOnStarted()
     {
         Cursor.lockState = CursorLockMode.None;
+        SetCanPushEcs(false);
         OnCursorOnStarted?.Invoke();
     }
 
@@ -69,9 +71,12 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
         OnCursorUnlocked?.Invoke();
     }
 
+    public void SetCanPushEcs(bool canPushEcs) => this.canPushEcs = canPushEcs;
+
     public void CursorOnGameEnded()
     {
         Cursor.lockState = CursorLockMode.None;
+        SetCanPushEcs(false);
         OnCursorOnGameEnded?.Invoke();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,17 @@ public class TimeCounter : MonoBehaviour
 
     private float currentTime;
     private bool counting = false;
+    private Action onTimeUp;
 
     private void Start()
     {
         currentTime = fullTime;
         UpdateTimeText();
+    }
+
+    public void Inialized(Action onTimeUpCallback)
+    {
+        onTimeUp = onTimeUpCallback;
     }
 
     [ContextMenu("Start CountDown")]
@@ -31,9 +38,14 @@ public class TimeCounter : MonoBehaviour
                 UpdateTimeText();
             }
             else
+            {
                 counting = false;
+                onTimeUp?.Invoke();
+            }
         }
     }
+
+    public void SetCounting(bool counting) => this.counting = counting;
 
     private void UpdateTimeText()
     {

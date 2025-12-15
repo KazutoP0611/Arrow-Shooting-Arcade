@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneController : MonoBehaviour
 {
+    [Header("Timer Details")]
     [SerializeField] private float countdownTime;
     [SerializeField] private float waitUntilStartCountdown;
     [SerializeField] private TextMeshProUGUI countdownText;
@@ -29,6 +30,7 @@ public class GameSceneController : MonoBehaviour
     {
         counting = false;
         currentCountdownTime = countdownTime;
+        timeCounter.Inialized(GameEnded);
 
         if (waitForFade != null)
             StopCoroutine(waitForFade);
@@ -63,12 +65,14 @@ public class GameSceneController : MonoBehaviour
     private void StartGame()
     {
         cursorLockManager.LockCursor();
+        cursorLockManager.SetCanPushEcs(true);
         timeCounter.StartCount();
     }
 
-    [ContextMenu("Stop Game")]
-    private void StopGame()
+    [ContextMenu("Ended Game")]
+    private void GameEnded()
     {
+        cursorLockManager.SetCanPushEcs(false);
         cursorLockManager.CursorOnGameEnded();
     }
 

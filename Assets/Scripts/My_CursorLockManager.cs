@@ -6,8 +6,10 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
 {
     public InputAxis CursorLock = InputAxis.DefaultMomentary;
 
+    public UnityEvent OnCursorOnStarted = new();
     public UnityEvent OnCursorLocked = new();
     public UnityEvent OnCursorUnlocked = new();
+    public UnityEvent OnCursorOnGameEnded = new();
 
     bool m_IsTriggered;
 
@@ -27,7 +29,7 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
 
     private void Start()
     {
-        LockCursor();
+        CursorOnStarted();
     }
 
     void Update()
@@ -44,10 +46,17 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
         }
     }
 
+    public void CursorOnStarted()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        OnCursorOnStarted?.Invoke();
+    }
+
     public void LockCursor()
     {
         if (enabled)
         {
+            //Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             OnCursorLocked?.Invoke();
         }
@@ -55,7 +64,14 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
 
     public void UnlockCursor()
     {
+        //Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         OnCursorUnlocked?.Invoke();
+    }
+
+    public void CursorOnGameEnded()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        OnCursorOnGameEnded?.Invoke();
     }
 }

@@ -6,7 +6,15 @@ public class ResultScreenController : MonoBehaviour
 {
     [SerializeField] private Fading resultScreenFade;
 
+    [Header("Text Details")]
+    [SerializeField] private TextMeshProUGUI pointText;
+    [SerializeField] private TextMeshProUGUI timeLeftText;
+    [SerializeField] private TextMeshProUGUI totalText;
+
     private Coroutine resultFadeCo;
+    private int score;
+    private int timeLeftScore;
+    private int totalScore;
 
     //[SerializeField] private TextMeshProUGUI result
     public void ShowGameResult()
@@ -21,10 +29,22 @@ public class ResultScreenController : MonoBehaviour
         resultScreenFade.FadeIn(1.4f);
 
         yield return resultScreenFade.fadeCoroutine;
+
+        ShowPoint();
     }
 
-    public void ShowResult(int points, int timeLeft)
+    private void ShowPoint()
     {
+        score = PointManager.instance.score;
+        totalScore = (score + timeLeftScore);
 
+        pointText.text = score.ToString();
+        timeLeftText.text = timeLeftScore.ToString();
+        totalText.text = totalScore.ToString();
+    }
+
+    public void SetPoints(int timeLeft)
+    {
+        timeLeftScore = (timeLeft * 3);
     }
 }

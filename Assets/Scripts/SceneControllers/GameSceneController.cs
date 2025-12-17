@@ -21,6 +21,7 @@ public class GameSceneController : MonoBehaviour
     private My_CursorLockManager cursorLockManager;
     private TimeCounter timeCounter;
     private TargetCount targetCount;
+    private ResultScreenController resultScreenController;
 
     private Coroutine waitForFade;
     private Coroutine waitBeforeCountdownCo;
@@ -32,6 +33,7 @@ public class GameSceneController : MonoBehaviour
         cursorLockManager = FindFirstObjectByType<My_CursorLockManager>();
         timeCounter = FindFirstObjectByType<TimeCounter>();
         targetCount = FindFirstObjectByType<TargetCount>();
+        resultScreenController = FindFirstObjectByType<ResultScreenController>();
 
         if (instance != null && instance != this)
             Destroy(gameObject);
@@ -88,6 +90,7 @@ public class GameSceneController : MonoBehaviour
     {
         cursorLockManager.SetCanPushEcs(false);
         cursorLockManager.CursorOnGameEnded();
+        resultScreenController.SetPoints(timeCounter.GetTimeLeft());
     }
 
     IEnumerator WaitForFadeCo()

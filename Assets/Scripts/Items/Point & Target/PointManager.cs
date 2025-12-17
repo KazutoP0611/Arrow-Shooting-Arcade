@@ -5,6 +5,7 @@ using UnityEngine;
 public class PointManager : MonoBehaviour
 {
     public static PointManager instance { get; private set; }
+    public int score { get { return currentScore; } }
 
     [Header("Point Display Details")]
     [SerializeField] private TextMeshProUGUI pointText;

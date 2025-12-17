@@ -13,6 +13,9 @@ public class TimeCounter : MonoBehaviour
     private bool counting = false;
     private Action onTimeUp;
 
+    private int min;
+    private int secs;
+
     private void Start()
     {
         currentTime = fullTime;
@@ -49,10 +52,23 @@ public class TimeCounter : MonoBehaviour
 
     private void UpdateTimeText()
     {
-        int min = Mathf.FloorToInt(currentTime / 60f);
-        int secs = Mathf.CeilToInt(currentTime % 60f);
+        min = Mathf.FloorToInt(currentTime / 60f);
+        secs = Mathf.CeilToInt(currentTime % 60f);
         timeText.text = $"{min}:{secs:00}";
 
         timeSlider.value = currentTime / fullTime;
     }
+
+    public int GetTimeLeft()
+    {
+        return (min * 60) + secs; 
+    }
+
+    //private void GetTime(int out min, int out secs)
+    //{
+    //    min = Mathf.FloorToInt(currentTime / 60f);
+    //    secs = Mathf.CeilToInt(currentTime % 60f);
+
+    //    return GetTime(min, secs);
+    //}
 }

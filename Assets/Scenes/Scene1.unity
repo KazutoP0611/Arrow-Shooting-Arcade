@@ -4537,6 +4537,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resultScreenFade: {fileID: 1230694259}
+  pointText: {fileID: 1209075532}
+  timeLeftText: {fileID: 2024440476}
+  totalText: {fileID: 41891861}
 --- !u!1001 &1274754925
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,11 @@ public class ResultScreenController : MonoBehaviour
     private int timeLeftScore;
     private int totalScore;
 
-    //[SerializeField] private TextMeshProUGUI result
+    public void SetPoints(int timeLeft)
+    {
+        timeLeftScore = (timeLeft * 3);
+    }
+
     public void ShowGameResult()
     {
         if (resultFadeCo != null)
@@ -41,10 +45,5 @@ public class ResultScreenController : MonoBehaviour
         pointText.text = score.ToString();
         timeLeftText.text = timeLeftScore.ToString();
         totalText.text = totalScore.ToString();
-    }
-
-    public void SetPoints(int timeLeft)
-    {
-        timeLeftScore = (timeLeft * 3);
     }
 }

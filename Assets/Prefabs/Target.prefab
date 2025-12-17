@@ -46,9 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9066e99e8ec833c47a8a17ea5a09a6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
   maxTaregetScore: 10
+  targetObject: {fileID: 6323470931166319710}
   hitSound: {fileID: 8300000, guid: e7b5f0f1954451f4e906a628b7df6478, type: 3}
+  movement: 0
+  movementLength: 1
+  movementSpeed: 1
+  radius: 0.5
 --- !u!54 &6653948870591054177
 Rigidbody:
   m_ObjectHideFlags: 0

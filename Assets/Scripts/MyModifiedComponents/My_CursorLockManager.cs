@@ -58,7 +58,6 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     {
         if (enabled)
         {
-            //Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             OnCursorLocked?.Invoke();
         }
@@ -66,7 +65,6 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
 
     public void UnlockCursor()
     {
-        //Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         OnCursorUnlocked?.Invoke();
     }
@@ -76,7 +74,6 @@ public class My_CursorLockManager : MonoBehaviour, IInputAxisOwner
     public void CursorOnGameEnded()
     {
         Cursor.lockState = CursorLockMode.None;
-        SetCanPushEcs(false);
         OnCursorOnGameEnded?.Invoke();
     }
 }

@@ -69,11 +69,11 @@ public class ArrowController : MonoBehaviour
 
             if (target)
             {
-                target.OnHit(hitInfo.point, this.gameObject);
-                Destroy(gameObject, destroyArrowAfterHitTarget);
+                target.OnHit(hitInfo.point, gameObject);
+                //Destroy(gameObject, destroyArrowAfterHitTarget);
             }
             else
-                Destroy(gameObject);
+                Destroy(gameObject, destroyArrowAfterHitTarget);
         }
     }
 

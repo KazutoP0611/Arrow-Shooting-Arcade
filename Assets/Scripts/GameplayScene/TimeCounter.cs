@@ -24,8 +24,8 @@ public class TimeCounter : MonoBehaviour
         onTimeUp = onTimeUpCallback;
     }
 
-    [ContextMenu("Start CountDown")]
-    public void StartCount() => counting = true;
+    //[ContextMenu("Start CountDown")]
+    //private void StartCount() => counting = true;
 
     private void Update()
     {

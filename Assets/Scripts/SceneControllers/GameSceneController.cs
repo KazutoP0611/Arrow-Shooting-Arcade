@@ -1,19 +1,26 @@
 using System.Collections;
 using TMPro;
 using Unity.Cinemachine.Samples;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameSceneController : MonoBehaviour
 {
+    public static GameSceneController instance { get; private set; }
+
     [Header("Timer Details")]
-    [SerializeField] private float countdownTime;
     [SerializeField] private float waitUntilStartCountdown;
+    [SerializeField] private float countdownTime;
     [SerializeField] private TextMeshProUGUI countdownText;
+
+    [Header("Game Finish Details")]
+    [SerializeField] private float waitForSecsAfterTargetAllOutBeforeEndGame;
 
     //private Fading fadingUI;
     private My_CursorLockManager cursorLockManager;
     private TimeCounter timeCounter;
+    private TargetCount targetCount;
 
     private Coroutine waitForFade;
     private Coroutine waitBeforeCountdownCo;
@@ -24,13 +31,21 @@ public class GameSceneController : MonoBehaviour
     {
         cursorLockManager = FindFirstObjectByType<My_CursorLockManager>();
         timeCounter = FindFirstObjectByType<TimeCounter>();
+        targetCount = FindFirstObjectByType<TargetCount>();
+
+        if (instance != null && instance != this)
+            Destroy(gameObject);
+        else
+            instance = this;
     }
 
     private void Start()
     {
         counting = false;
         currentCountdownTime = countdownTime;
+
         timeCounter.Inialized(GameEnded);
+        targetCount.Intialized(GameEnded);
 
         if (waitForFade != null)
             StopCoroutine(waitForFade);
@@ -66,7 +81,6 @@ public class GameSceneController : MonoBehaviour
     {
         cursorLockManager.LockCursor();
         cursorLockManager.SetCanPushEcs(true);
-        timeCounter.StartCount();
     }
 
     [ContextMenu("Ended Game")]

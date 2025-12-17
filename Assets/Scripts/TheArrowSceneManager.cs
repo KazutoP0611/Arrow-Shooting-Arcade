@@ -6,8 +6,8 @@ public class TheArrowSceneManager : MonoBehaviour
 {
     public static TheArrowSceneManager instance { get; private set; }
 
-    private Coroutine changeSceneCoroutine;
     private Fading fadingUI;
+    private Coroutine changeSceneCoroutine;
 
     private void Awake()
     {
@@ -21,11 +21,13 @@ public class TheArrowSceneManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        //fadeUI = FindAnyObjectByType<FadeUI>();
+        fadingUI = FindAnyObjectByType<ChangeScreenFadeUI>();
     }
 
     public void ChangeScene(string sceneName)
     {
+        //Cursor.lockState = CursorLockMode.Locked;
+
         if (changeSceneCoroutine != null)
             StopCoroutine(changeSceneCoroutine);
 
@@ -44,7 +46,7 @@ public class TheArrowSceneManager : MonoBehaviour
     public Fading GetFadeUIComponent()
     {
         if (fadingUI == null)
-            fadingUI = FindFirstObjectByType<Fading>();
+            fadingUI = FindFirstObjectByType<ChangeScreenFadeUI>();
 
         return fadingUI;
     }

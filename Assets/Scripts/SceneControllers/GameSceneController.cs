@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameSceneController : MonoBehaviour
+public class GameSceneController : SceneController_Entity
 {
     public enum GameEndType
     {
@@ -117,7 +117,7 @@ public class GameSceneController : MonoBehaviour
         resultScreenController.SetPoints(timeCounter.GetTimeLeft());
     }
 
-    public void GotoTitleScene() => TheArrowSceneManager.instance.ChangeScene("TitleScene");
+    public void GotoTitleScene() => ChangeSceneSequence("TitleScene");
 
-    public void RestartScene() => TheArrowSceneManager.instance.ChangeScene(SceneManager.GetActiveScene().name);
+    public void RestartScene() => ChangeSceneSequence(SceneManager.GetActiveScene().name);
 }

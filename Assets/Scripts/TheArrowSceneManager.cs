@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class TheArrowSceneManager : MonoBehaviour
 {
+    [SerializeField] private AudioSource changeSceneAudioSource;
+
     public static TheArrowSceneManager instance { get; private set; }
 
     private Fading fadingUI;
@@ -27,6 +29,7 @@ public class TheArrowSceneManager : MonoBehaviour
     public void ChangeScene(string sceneName)
     {
         //Cursor.lockState = CursorLockMode.Locked;
+        changeSceneAudioSource.Play(0);
 
         if (changeSceneCoroutine != null)
             StopCoroutine(changeSceneCoroutine);
@@ -40,6 +43,7 @@ public class TheArrowSceneManager : MonoBehaviour
 
         yield return GetFadeUIComponent().fadeCoroutine;
 
+        changeSceneAudioSource.Stop();
         SceneManager.LoadScene(sceneName);
     }
 

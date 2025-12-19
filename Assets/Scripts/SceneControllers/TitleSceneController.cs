@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TitleSceneController : MonoBehaviour
+public class TitleSceneController : SceneController_Entity
 {
-    public void GotoGameScene() => TheArrowSceneManager.instance.ChangeScene("Scene1");
+    public void GotoGameScene() => ChangeSceneSequence("Scene1");
 }

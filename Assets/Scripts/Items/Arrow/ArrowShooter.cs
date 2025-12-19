@@ -55,7 +55,7 @@ public class ArrowShooter : MonoBehaviour
         ResetAimValue();
     }
 
-    private void ResetAimValue()
+    public void ResetAimValue()
     {
         bowAudioSource.Stop();
         aimValue = 0.0f;

@@ -110,6 +110,9 @@ public class My_AnimatorController : MonoBehaviour
         m_AnimationParams.IsAiming = m_AimController.PlayerRotation == My_AimController.CouplingMode.Coupled;
         m_Controller.IsAiming = m_AnimationParams.IsAiming;
 
+        //fix animation still go to aiming animation if you hold mouse button when time end.
+        Debug.LogWarning("Fix this!!!!! fix above!!!!");
+
         //if (m_AnimationParams.IsAiming)
         //{
         //    if (Input.GetButtonUp("Fire1"))

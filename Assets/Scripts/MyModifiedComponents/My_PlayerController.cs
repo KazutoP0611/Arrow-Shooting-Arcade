@@ -165,11 +165,12 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         m_TimeLastGrounded = Time.time;
 
         inputAction.CMDefault.Aim.started += value => StartedAiming();
-        inputAction.CMDefault.Aim.canceled += value => ShootHandle();
+        //inputAction.CMDefault.Aim.canceled += value => ShootHandle(); => This will make ArrowShooter shoot arrow after component is disable, because it will be performed when disable, duh! 
     }
 
     private void OnDisable()
     {
+        //arrowShooter.ResetAimValue();
         inputAction.Disable();
     }
 
@@ -248,6 +249,9 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             vel.y = m_CurrentVelocityY;
             PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
+
+        if (inputAction.CMDefault.Aim.WasReleasedThisFrame())
+            ShootHandle();
     }
 
     private void StartedAiming() => arrowShooter.StartedAiming();

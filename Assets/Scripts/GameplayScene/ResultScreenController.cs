@@ -41,6 +41,7 @@ public class ResultScreenController : MonoBehaviour
         totalScore = (score + timeLeftScore);
 
         #region Show Each point result with animations
+
         #region First methos to show text animation
         for (int i = 0; i < 3; i++)
         {
@@ -69,10 +70,14 @@ public class ResultScreenController : MonoBehaviour
         //You can use either one above and below, same result
 
         #region Second method to show text animation
-        //yield return listOfResultPoint[0].ShowResultPoint(score);
-        //yield return listOfResultPoint[1].ShowResultPoint(timeLeftScore);
-        //yield return listOfResultPoint[2].ShowResultPoint(totalScore);
+        //listOfResultPoint[0].ShowResultPoint(score);
+        //yield return listOfResultPoint[0].coroutine;
+        //listOfResultPoint[1].ShowResultPoint(timeLeftScore);
+        //yield return listOfResultPoint[1].coroutine;
+        //listOfResultPoint[2].ShowResultPoint(totalScore);
+        //yield return listOfResultPoint[2].coroutine;
         #endregion
+
         #endregion
     }
 

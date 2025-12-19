@@ -11,7 +11,7 @@ public class TimeCounter : MonoBehaviour
 
     private float currentTime;
     private bool counting = false;
-    private Action onTimeUp;
+    private Action<GameSceneController.GameEndType> onTimeUp;
 
     private int min;
     private int secs;
@@ -22,7 +22,7 @@ public class TimeCounter : MonoBehaviour
         UpdateTimeText();
     }
 
-    public void Inialized(Action onTimeUpCallback)
+    public void Inialized(Action<GameSceneController.GameEndType> onTimeUpCallback)
     {
         onTimeUp = onTimeUpCallback;
     }
@@ -43,7 +43,7 @@ public class TimeCounter : MonoBehaviour
             else
             {
                 counting = false;
-                onTimeUp?.Invoke();
+                onTimeUp?.Invoke(GameSceneController.GameEndType.TimeUp);
             }
         }
     }

@@ -654,18 +654,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1115788794}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnCursorLocked:
     m_PersistentCalls:
       m_Calls:
@@ -866,18 +854,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1115788794}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1230694260}
         m_TargetAssemblyTypeName: ResultScreenController, Assembly-CSharp
@@ -6054,9 +6030,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waitBeforeStartCountdown: 0
   waitAfterCountdownEnded: 1
-  countdownTime: 3
   countdownText: {fileID: 281195802}
+  countdownTime: 3
+  textAfterCountdownEnded: Shoot!
   waitForSecsAfterTargetAllOutBeforeEndGame: 2
+  gameEndTextMesh: {fileID: 1115788796}
 --- !u!4 &1768836177
 Transform:
   m_ObjectHideFlags: 0

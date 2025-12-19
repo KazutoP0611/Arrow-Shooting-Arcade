@@ -7,17 +7,25 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneController : MonoBehaviour
 {
+    public enum GameEndType
+    {
+        TimeUp,
+        ShootAll
+    }
+
     public static GameSceneController instance { get; private set; }
 
     [Header("Timer Details")]
     [SerializeField] private float waitBeforeStartCountdown;
     [SerializeField] private float waitAfterCountdownEnded;
     [Space]
-    [SerializeField] private float countdownTime;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private float countdownTime;
+    [SerializeField] private string textAfterCountdownEnded;
 
     [Header("Game Finish Details")]
     [SerializeField] private float waitForSecsAfterTargetAllOutBeforeEndGame;
+    [SerializeField] private TextMeshProUGUI gameEndTextMesh;
 
     //private Fading fadingUI;
     private My_CursorLockManager cursorLockManager;
@@ -31,6 +39,8 @@ public class GameSceneController : MonoBehaviour
 
     private void Awake()
     {
+        gameEndTextMesh.gameObject.SetActive(false);
+
         cursorLockManager = FindFirstObjectByType<My_CursorLockManager>();
         timeCounter = FindFirstObjectByType<TimeCounter>();
         targetCount = FindFirstObjectByType<TargetCount>();
@@ -72,7 +82,7 @@ public class GameSceneController : MonoBehaviour
             yield return null;
         }
 
-        countdownText.text = $"Start!!";
+        countdownText.text = $"{textAfterCountdownEnded}";
 
         yield return new WaitForSeconds(waitAfterCountdownEnded);
 
@@ -87,8 +97,21 @@ public class GameSceneController : MonoBehaviour
     }
 
     [ContextMenu("Ended Game")]
-    private void GameEnded()
+    private void GameEnded(GameEndType gameEndType)
     {
+        string gameEndText = "";
+        switch (gameEndType)
+        {
+            case GameEndType.TimeUp:
+                gameEndText = "time up!";
+                break;
+            case GameEndType.ShootAll:
+                gameEndText = "finished!";
+                break;
+        }
+        gameEndTextMesh.gameObject.SetActive(true);
+        gameEndTextMesh.text = gameEndText;
+
         cursorLockManager.SetCanPushEcs(false);
         cursorLockManager.CursorOnGameEnded();
         resultScreenController.SetPoints(timeCounter.GetTimeLeft());

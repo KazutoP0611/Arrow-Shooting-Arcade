@@ -7,14 +7,14 @@ public class TargetCount : MonoBehaviour
 {
     private List<Target> listOfTarget;
 
-    private Action targetAllOut;
+    private Action<GameSceneController.GameEndType> targetAllOut;
 
     private void Awake()
     {
         listOfTarget = new List<Target>();
     }
 
-    public void Intialized(Action targellAllOutCallback)
+    public void Intialized(Action<GameSceneController.GameEndType> targellAllOutCallback)
     {
         targetAllOut = targellAllOutCallback;
     }
@@ -40,7 +40,7 @@ public class TargetCount : MonoBehaviour
 
         if (listOfTarget.Count <= 0)
         {
-            targetAllOut?.Invoke();
+            targetAllOut?.Invoke(GameSceneController.GameEndType.ShootAll);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class ResultScreenController : MonoBehaviour
     [SerializeField] private Fading resultScreenFade;
 
     [Header("Text Details")]
+    [SerializeField] private List<ResultPoint> listOfResultPoint;
     [SerializeField] private TextMeshProUGUI pointText;
     [SerializeField] private TextMeshProUGUI timeLeftText;
     [SerializeField] private TextMeshProUGUI totalText;
@@ -25,7 +27,7 @@ public class ResultScreenController : MonoBehaviour
     {
         if (resultFadeCo != null)
             StopCoroutine(resultFadeCo);
-        StartCoroutine(ResultFadeCoroutine());
+        resultFadeCo = StartCoroutine(ResultFadeCoroutine());
     }
 
     IEnumerator ResultFadeCoroutine()
@@ -34,16 +36,86 @@ public class ResultScreenController : MonoBehaviour
 
         yield return resultScreenFade.fadeCoroutine;
 
-        ShowPoint();
-    }
-
-    private void ShowPoint()
-    {
+        // Calculate score
         score = PointManager.instance.score;
         totalScore = (score + timeLeftScore);
 
-        pointText.text = score.ToString();
-        timeLeftText.text = timeLeftScore.ToString();
-        totalText.text = totalScore.ToString();
+        #region Show Each point result with animations
+        #region First methos to show text animation
+        for (int i = 0; i < 3; i++)
+        {
+            int resultPoint = 0;
+            switch (i)
+            {
+                case 0:
+                    resultPoint = score;
+                    break;
+                case 1:
+                    resultPoint = timeLeftScore;
+                    break;
+                case 2:
+                    resultPoint = totalScore;
+                    break;
+            }
+            // 1. First coroutine way
+            //yield return listOfResultPoint[i].ShowResultPoint(resultPoint);
+
+            // 2. Second coroutine way
+            listOfResultPoint[i].ShowResultPoint(resultPoint);
+            yield return listOfResultPoint[i].coroutine;
+        }
+        #endregion
+
+        //You can use either one above and below, same result
+
+        #region Second method to show text animation
+        //yield return listOfResultPoint[0].ShowResultPoint(score);
+        //yield return listOfResultPoint[1].ShowResultPoint(timeLeftScore);
+        //yield return listOfResultPoint[2].ShowResultPoint(totalScore);
+        #endregion
+        #endregion
     }
+
+    //private void ShowPoint()
+    //{
+    //    score = PointManager.instance.score;
+    //    totalScore = (score + timeLeftScore);
+
+    //    if (showResultPointCo != null)
+    //        StopCoroutine(showResultPointCo);
+    //    StartCoroutine(ShowResultPoints(score, timeLeftScore, totalScore));
+    //}
+
+    //IEnumerator ShowResultPoints(int score, int timeLeftScore, int totalScore)
+    //{
+    //    for (int i = 0; i < 3; i++)
+    //    {
+    //        int resultPoint = 0;
+    //        switch (i)
+    //        {
+    //            case 0:
+    //                resultPoint = score;
+    //                break;
+    //            case 1:
+    //                resultPoint = timeLeftScore;
+    //                break;
+    //            case 2:
+    //                resultPoint = totalScore;
+    //                break;
+    //        }
+    //        // 1. First coroutine way
+    //        //yield return listOfResultPoint[i].ShowResultPoint(resultPoint);
+
+    //        // 2. Second coroutine way
+    //        listOfResultPoint[i].ShowResultPoint(resultPoint);
+    //        yield return listOfResultPoint[i].coroutine;
+    //    }
+
+
+    //    //You can use either one above and below, same result
+
+    //    //yield return listOfResultPoint[0].ShowResultPoint(score);
+    //    //yield return listOfResultPoint[1].ShowResultPoint(timeLeftScore);
+    //    //yield return listOfResultPoint[2].ShowResultPoint(totalScore);
+    //}
 }

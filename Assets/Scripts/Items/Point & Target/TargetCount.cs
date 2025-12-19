@@ -6,7 +6,6 @@ using UnityEngine;
 public class TargetCount : MonoBehaviour
 {
     private List<Target> listOfTarget;
-    private Coroutine targetAllOutCo;
 
     private Action targetAllOut;
 

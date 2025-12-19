@@ -10,7 +10,9 @@ public class GameSceneController : MonoBehaviour
     public static GameSceneController instance { get; private set; }
 
     [Header("Timer Details")]
-    [SerializeField] private float waitUntilStartCountdown;
+    [SerializeField] private float waitBeforeStartCountdown;
+    [SerializeField] private float waitAfterCountdownEnded;
+    [Space]
     [SerializeField] private float countdownTime;
     [SerializeField] private TextMeshProUGUI countdownText;
 
@@ -24,7 +26,6 @@ public class GameSceneController : MonoBehaviour
     private ResultScreenController resultScreenController;
 
     private Coroutine waitForFade;
-    private Coroutine waitBeforeCountdownCo;
     private float currentCountdownTime;
     private bool counting;
 
@@ -52,31 +53,31 @@ public class GameSceneController : MonoBehaviour
         if (waitForFade != null)
             StopCoroutine(waitForFade);
 
-        waitForFade = StartCoroutine(WaitForFadeCo());
+        waitForFade = StartCoroutine(StartSequence());
     }
 
-    private void Update()
+    IEnumerator StartSequence()
     {
-        if (counting)
-        {
-            CountdownBeforeStart();
-        }
-    }
+        // Wait for fade out screen to end.
+        yield return TheArrowSceneManager.instance.GetFadeUIComponent().fadeCoroutine;
 
-    private void CountdownBeforeStart()
-    {
-        if (currentCountdownTime > 0)
+        // Wait before countdown after fade screen ended.
+        yield return new WaitForSeconds(waitBeforeStartCountdown);
+
+        // Start Countdown
+        while (currentCountdownTime > 0)
         {
             currentCountdownTime -= Time.deltaTime;
             countdownText.text = $"{Mathf.CeilToInt(currentCountdownTime):0}";
+            yield return null;
         }
-        else
-        {
-            counting = false;
-            countdownText.enabled = false;
 
-            StartGame();
-        }
+        countdownText.text = $"Start!!";
+
+        yield return new WaitForSeconds(waitAfterCountdownEnded);
+
+        countdownText.enabled = false;
+        StartGame();
     }
 
     private void StartGame()
@@ -91,22 +92,6 @@ public class GameSceneController : MonoBehaviour
         cursorLockManager.SetCanPushEcs(false);
         cursorLockManager.CursorOnGameEnded();
         resultScreenController.SetPoints(timeCounter.GetTimeLeft());
-    }
-
-    IEnumerator WaitForFadeCo()
-    {
-        yield return TheArrowSceneManager.instance.GetFadeUIComponent().fadeCoroutine;
-
-        if (waitBeforeCountdownCo != null)
-            StopCoroutine(waitBeforeCountdownCo);
-
-        waitBeforeCountdownCo = StartCoroutine(WaitBeforeCountdown());
-    }
-
-    IEnumerator WaitBeforeCountdown()
-    {
-        yield return new WaitForSeconds(waitUntilStartCountdown);
-        counting = true;
     }
 
     public void GotoTitleScene() => TheArrowSceneManager.instance.ChangeScene("TitleScene");

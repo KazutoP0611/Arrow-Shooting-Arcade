@@ -166,6 +166,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
 
         inputAction.CMDefault.Aim.started += value => StartedAiming();
         //inputAction.CMDefault.Aim.canceled += value => ShootHandle(); => This will make ArrowShooter shoot arrow after component is disable, because it will be performed when disable, duh! 
+        inputAction.CMDefault.Aim.canceled += value => arrowShooter.ResetAimValue();
     }
 
     private void OnDisable()
@@ -228,6 +229,9 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         #region My implement
         //My implement
         CheckIsAiming();
+
+        if (inputAction.CMDefault.Aim.WasReleasedThisFrame())
+            ShootHandle();
         #endregion
 
         // If not strafing, rotate the player to face movement direction
@@ -249,9 +253,6 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             vel.y = m_CurrentVelocityY;
             PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
-
-        if (inputAction.CMDefault.Aim.WasReleasedThisFrame())
-            ShootHandle();
     }
 
     private void StartedAiming() => arrowShooter.StartedAiming();

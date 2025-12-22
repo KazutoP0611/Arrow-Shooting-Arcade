@@ -35,7 +35,6 @@ public class GameSceneController : SceneController_Entity
 
     private Coroutine waitForFade;
     private float currentCountdownTime;
-    private bool counting;
 
     private void Awake()
     {
@@ -54,7 +53,6 @@ public class GameSceneController : SceneController_Entity
 
     private void Start()
     {
-        counting = false;
         currentCountdownTime = countdownTime;
 
         timeCounter.Inialized(GameEnded);

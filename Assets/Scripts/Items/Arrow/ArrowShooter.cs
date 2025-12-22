@@ -30,25 +30,30 @@ public class ArrowShooter : MonoBehaviour
         ResetAimValue();
     }
 
-    public void StartedAiming() => bowAudioSource.Play(0);
+    public void StartedAiming()
+    {
+        aimValue = 0.0f;
+        bowAudioSource.Play(0);
+    }
 
     public void Aiming()
     {
         time += Time.deltaTime;
         aimValue = Mathf.Clamp01(time / aimTime);
+
+        aimingDirection = aimTargetManager.GetAimDirection(shootPoint.position, Camera.main.transform.forward).normalized;
+        Debug.DrawRay(shootPoint.position, aimingDirection, Color.yellow);
     }
 
     public void ShootArrow()
     {
-        //Debug.LogWarning($"Shoot!\n");
         aimingDirection = aimTargetManager.GetAimDirection(shootPoint.position, Camera.main.transform.forward).normalized;
 
         var rot = Quaternion.LookRotation(aimingDirection, Vector3.up);
-        GameObject arrowRigid = Instantiate(arrowPrefab, shootPoint.position, rot);
+        ArrowController arrow = Instantiate(arrowPrefab, shootPoint.position, rot).GetComponent<ArrowController>();
 
-        Vector3 shootForce = arrowRigid.transform.forward.normalized * arrowForce * aimValue;
-        //Debug.LogWarning(shootForce);
-        arrowRigid.GetComponent<Rigidbody>().AddForce(shootForce, ForceMode.Impulse);
+        Vector3 shootForce = arrow.transform.forward.normalized * arrowForce * aimValue;
+        arrow.AddForce(shootForce);
 
         AudioSource.PlayClipAtPoint(bowReleaseSound, shootPoint.position);
 
@@ -58,7 +63,6 @@ public class ArrowShooter : MonoBehaviour
     public void ResetAimValue()
     {
         bowAudioSource.Stop();
-        aimValue = 0.0f;
         time = 0.0f;
     }
 }

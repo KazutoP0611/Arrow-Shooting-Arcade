@@ -11,7 +11,13 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
     CinemachineVirtualCameraBase AimCamera;
     CinemachineVirtualCameraBase FreeCamera;
 
-    bool IsAiming => AimMode.Value > 0.5f;
+    #region My Modification
+    //My modification
+    public bool canAim { get; set; }
+    //------------------------------
+    #endregion
+
+    bool IsAiming => canAim ? AimMode.Value > 0.5f : false;
 
     void IInputAxisOwner.GetInputAxes(List<IInputAxisOwner.AxisDescriptor> axes)
     {
@@ -19,6 +25,15 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
     }
 
     void OnValidate() => AimMode.Validate();
+
+    //My modification
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        canAim = true;
+    }
+    //--------------------------------
 
     protected override void Start()
     {
@@ -60,8 +75,8 @@ public class MyAimCameraRig : CinemachineCameraManagerBase, IInputAxisOwner
         {
             // Set the mode of the player aim controller.
             // We want the player rotation to be copuled to the camera when aiming, otherwise not.
-            AimController.PlayerRotation = IsAiming
-                ? My_AimController.CouplingMode.Coupled
+            AimController.PlayerRotation = IsAiming ?
+                My_AimController.CouplingMode.Coupled
                 : My_AimController.CouplingMode.Decoupled;
             AimController.RecenterPlayer();
         }

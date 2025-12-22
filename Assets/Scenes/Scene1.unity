@@ -3929,7 +3929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f311594370459894eaa3a6fa563b8685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullTime: 10
+  fullTime: 300
   timeText: {fileID: 1545244431}
   timeSlider: {fileID: 1198274793}
 --- !u!1 &980961151

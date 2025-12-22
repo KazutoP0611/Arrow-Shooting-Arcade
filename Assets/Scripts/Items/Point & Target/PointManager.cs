@@ -31,10 +31,8 @@ public class PointManager : MonoBehaviour
     public void ManagePoint(int scorePoint, Vector3 spawnPoint)
     {
         ScoreTextController textController = Instantiate(textPrefab, spawnPoint, Quaternion.LookRotation(Camera.main.transform.forward)).GetComponent<ScoreTextController>();
-        if (scorePoint > 0)
-            textController.SetText(scorePoint, Color.green, OnScoreAnimatedFinish);
-        else
-            textController.SetText(scorePoint, Color.red, OnScoreAnimatedFinish);
+        Color textColor = scorePoint > 0 ? Color.green : Color.red;
+        textController.SetText(scorePoint, textColor, OnScoreAnimatedFinish);
     }
 
     private void OnScoreAnimatedFinish(int score)

@@ -100,8 +100,8 @@ public class ArrowController : MonoBehaviour
     //    }
     //}
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, transform.forward * CheckDistance);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(transform.position, transform.forward * CheckDistance);
+    //}
 }

@@ -17,23 +17,32 @@ public class Target : MonoBehaviour
     [SerializeField] private int maxTaregetScore;
     [SerializeField] private GameObject targetObject;
     [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip errorSound;
 
     [Header("Movement Details")]
     [SerializeField] private Movement movement;
     [SerializeField] private float movementLength = 1;
     [SerializeField] private float movementSpeed = 1;
 
+    [Header("Target Details")]
+    [SerializeField] private Renderer targetRender;
+    [SerializeField] private Material greenHighlight;
+    [SerializeField] private Material redHighlight;
+
     [Header("Debug")]
     [SerializeField] private float radius;
+
+    public int GetScore { get { return maxTaregetScore; } }
 
     private Action<Target> OnHitAction;
     private float time;
     private Vector3 startTargetPosition = Vector3.zero;
-    private bool moving;
 
     private void Start()
     {
         startTargetPosition = targetObject.transform.localPosition;
+
+        targetRender.material = maxTaregetScore > 0 ? greenHighlight : redHighlight;
     }
 
     public void Initialized(Action<Target> OnHitCallback)
@@ -76,25 +85,32 @@ public class Target : MonoBehaviour
     {
         arrow.transform.parent = transform;
 
-        AudioSource.PlayClipAtPoint(hitSound, transform.position);
+        AudioSource.PlayClipAtPoint(
+            maxTaregetScore > 0 ? hitSound : errorSound,
+            transform.position
+        );
 
-        float hitLength = Vector3.Distance(hitPoint, transform.position);
-        
         int point = 0;
-        if (hitLength < 0.07)
-            point = maxTaregetScore;
-        else if (hitLength < 0.3)
-            point = maxTaregetScore / 2;
+        if (maxTaregetScore > 0)
+        {
+            float hitLength = Vector3.Distance(hitPoint, targetObject.transform.position);
+            if (hitLength < 0.07)
+                point = maxTaregetScore;
+            else if (hitLength < 0.3)
+                point = maxTaregetScore / 2;
+            else
+                point = maxTaregetScore / 5;
+        }
         else
-            point = maxTaregetScore / 5;
+            point = maxTaregetScore;
 
-        PointManager.instance.ManagePoint(point, transform.position);
+        PointManager.instance.ManagePoint(point, hitPoint);
 
         OnHitAction?.Invoke(this);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, radius);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireSphere(transform.position, radius);
+    //}
 }

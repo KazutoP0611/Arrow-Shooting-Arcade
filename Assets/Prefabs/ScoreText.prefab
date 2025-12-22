@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goToDirection: {x: 0, y: 1.45, z: 0}
-  transformInSecs: 0.2
+  transformInSecs: 0.5
   text: {fileID: 4708402553897506489}
 --- !u!1 &6569123787649208184
 GameObject:

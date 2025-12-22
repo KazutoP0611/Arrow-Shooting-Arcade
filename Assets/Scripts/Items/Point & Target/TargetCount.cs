@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TargetCount : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI targetCountText;
+    [SerializeField] private bool destroyTargetOnHit = true;
+
     private List<Target> listOfTarget;
 
     private Action<GameSceneController.GameEndType> targetAllOut;
+    private int allTarget;
 
     private void Awake()
     {
@@ -28,19 +33,36 @@ public class TargetCount : MonoBehaviour
             foreach(Target target in targetArray)
             {
                 target.Initialized(OnTargetHit);
-                listOfTarget.Add(target);
+
+                if (target.GetScore > 0)
+                    listOfTarget.Add(target);
             }
         }
+
+        allTarget = listOfTarget.Count;
+        UpdateText();
     }
 
     private void OnTargetHit(Target target)
     {
-        listOfTarget.Remove(target);
-        Destroy(target.gameObject);
+        if (destroyTargetOnHit)
+        {
+            if (target.GetScore > 0)
+                listOfTarget.Remove(target);
+
+            Destroy(target.gameObject);
+        }
+
+        UpdateText();
 
         if (listOfTarget.Count <= 0)
         {
             targetAllOut?.Invoke(GameSceneController.GameEndType.ShootAll);
         }
+    }
+
+    private void UpdateText()
+    {
+        targetCountText.text = $"{listOfTarget.Count}/{allTarget}";
     }
 }

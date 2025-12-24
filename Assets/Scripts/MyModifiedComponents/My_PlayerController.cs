@@ -16,10 +16,10 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     public float Speed = 1f;
     [Tooltip("Ground speed when sprinting")]
     public float SprintSpeed = 4;
-    [Tooltip("Initial vertical speed when jumping")]
-    public float JumpSpeed = 4;
-    [Tooltip("Initial vertical speed when sprint-jumping")]
-    public float SprintJumpSpeed = 6;
+    //[Tooltip("Initial vertical speed when jumping")]
+    //public float JumpSpeed = 4;
+    //[Tooltip("Initial vertical speed when sprint-jumping")]
+    //public float SprintJumpSpeed = 6;
 
     public Action PreUpdate;
     public Action<Vector3, float> PostUpdate;
@@ -251,7 +251,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             // Get local-space velocity
             var vel = Quaternion.Inverse(transform.rotation) * m_CurrentVelocityXZ;
             vel.y = m_CurrentVelocityY;
-            PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
+            //PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
     }
 
@@ -362,7 +362,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             if (grounded && Jump.Value > 0.01f)
             {
                 m_IsJumping = true;
-                m_CurrentVelocityY = m_IsSprinting ? SprintJumpSpeed : JumpSpeed;
+                //m_CurrentVelocityY = m_IsSprinting ? SprintJumpSpeed : JumpSpeed;
             }
             // If we are falling, assume the jump pose
             if (!grounded && now - m_TimeLastGrounded > kDelayBeforeInferringJump)

@@ -143,6 +143,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   trailObject: {fileID: 9045737454738629499}
+  hitGroundSound: {fileID: 8300000, guid: 213d3c56dbab8d049bdfe5df560aaa7c, type: 3}
 --- !u!54 &9203281794754887823
 Rigidbody:
   m_ObjectHideFlags: 0

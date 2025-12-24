@@ -15,6 +15,7 @@ public class ArrowController : MonoBehaviour
     [SerializeField] private float destroyArrowAfterHitTarget;
     [SerializeField] private LayerMask CollisionLayers;
     [SerializeField] private GameObject trailObject;
+    [SerializeField] private AudioClip hitGroundSound;
     #endregion
 
     private Rigidbody rb;
@@ -85,6 +86,7 @@ public class ArrowController : MonoBehaviour
             }
             else
             {
+                AudioSource.PlayClipAtPoint(hitGroundSound, hitInfo.point, 1.0f);
                 Destroy(gameObject, destroyArrowAfterHitTarget);
             }
         }

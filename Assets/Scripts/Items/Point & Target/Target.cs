@@ -14,6 +14,7 @@ public class Target : MonoBehaviour
     }
 
     [Header("General Details")]
+    [Tooltip("Make sure to set target score in a composite number that can be divided by 2 and 5.")]
     [SerializeField] private int maxTaregetScore;
     [SerializeField] private GameObject targetObject;
     [SerializeField] private AudioClip hitSound;

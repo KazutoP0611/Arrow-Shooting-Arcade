@@ -4971,6 +4971,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 132452237}
     m_Modifications:
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
+      propertyPath: multiplyScore
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: maxTaregetScore
       value: -2
       objectReference: {fileID: 0}
@@ -6414,12 +6418,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
+      propertyPath: multiplyScore
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: movementLength
       value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: maxTaregetScore
-      value: 20
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 714064543390324189, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: m_Name
@@ -11193,6 +11201,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 132452237}
     m_Modifications:
+    - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
+      propertyPath: maxTaregetScore
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 714064543390324189, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: m_Name
       value: Target (3)
@@ -11856,12 +11868,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
+      propertyPath: multiplyScore
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: movementLength
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: maxTaregetScore
-      value: -20
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 714064543390324189, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: m_Name
@@ -16936,11 +16952,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: movementSpeed
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 704795991843768672, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: maxTaregetScore
-      value: 20
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 714064543390324189, guid: 20757c8ffee86ae4b8c08db904cc0222, type: 3}
       propertyPath: m_Name

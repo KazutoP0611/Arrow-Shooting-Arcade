@@ -16,6 +16,7 @@ public class Target : MonoBehaviour
     [Header("General Details")]
     [Tooltip("Make sure to set target score in a composite number that can be divided by 2 and 5.")]
     [SerializeField] private int maxTaregetScore;
+    [SerializeField] private int multiplyScore = 10;
     [SerializeField] private GameObject targetObject;
     [SerializeField] private AudioClip hitSound;
     [SerializeField] private AudioClip errorSound;
@@ -86,16 +87,11 @@ public class Target : MonoBehaviour
     {
         arrow.transform.parent = transform;
 
-        AudioSource.PlayClipAtPoint(
-            maxTaregetScore > 0 ? hitSound : errorSound,
-            transform.position
-        );
-
         int point = 0;
+        float hitLength = Vector3.Distance(hitPoint, targetObject.transform.position);
         if (maxTaregetScore > 0)
         {
-            float hitLength = Vector3.Distance(hitPoint, targetObject.transform.position);
-            if (hitLength < 0.07)
+            if (hitLength < 0.07) // You hit bullseye
                 point = maxTaregetScore;
             else if (hitLength < 0.3)
                 point = maxTaregetScore / 2;
@@ -103,7 +99,17 @@ public class Target : MonoBehaviour
                 point = maxTaregetScore / 5;
         }
         else
-            point = maxTaregetScore;
+        {
+            if (hitLength < 0.07) // You hit bullseye
+                point = Mathf.Abs(maxTaregetScore * multiplyScore);
+            else
+                point = maxTaregetScore;
+        }
+
+        AudioSource.PlayClipAtPoint(
+            point > 0 ? hitSound : errorSound,
+            transform.position
+        );
 
         PointManager.instance.ManagePoint(point, hitPoint);
 

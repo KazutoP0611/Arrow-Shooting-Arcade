@@ -2,13 +2,9 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.Cinemachine.Samples;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
-using static Unity.Cinemachine.Samples.SimplePlayerController;
-using static UnityEngine.LightAnchor;
 
 public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
 {
@@ -16,10 +12,10 @@ public abstract class My_PlayerControllerBase : MonoBehaviour, IInputAxisOwner
     public float Speed = 1f;
     [Tooltip("Ground speed when sprinting")]
     public float SprintSpeed = 4;
-    //[Tooltip("Initial vertical speed when jumping")]
-    //public float JumpSpeed = 4;
-    //[Tooltip("Initial vertical speed when sprint-jumping")]
-    //public float SprintJumpSpeed = 6;
+    [Tooltip("Initial vertical speed when jumping")]
+    public float JumpSpeed = 4;
+    [Tooltip("Initial vertical speed when sprint-jumping")]
+    public float SprintJumpSpeed = 6;
 
     public Action PreUpdate;
     public Action<Vector3, float> PostUpdate;
@@ -186,12 +182,12 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
         bool justLanded = ProcessJump();
 
         // Get the reference frame for the input
-        //Vector3 fwdDir = Camera.transform.forward;
-        //Vector3 rightDir = Camera.transform.right;
-        //fwdDir.y = 0;
-        //rightDir.y = 0;
-        //fwdDir.Normalize();
-        //rightDir.Normalize();
+        Vector3 fwdDir = Camera.transform.forward;
+        Vector3 rightDir = Camera.transform.right;
+        fwdDir.y = 0;
+        rightDir.y = 0;
+        fwdDir.Normalize();
+        rightDir.Normalize();
 
         var rawInput = /*fwdDir * MoveZ.Value + rightDir * MoveX.Value*/new Vector3(MoveX.Value, 0, MoveZ.Value);
         var inputFrame = GetInputFrame(Vector3.Dot(rawInput, m_LastRawInput) < 0.8f);
@@ -234,6 +230,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             ShootHandle();
         #endregion
 
+        //Debug.LogWarning($"Strafe is : {Strafe}");
         // If not strafing, rotate the player to face movement direction
         if (!Strafe && m_CurrentVelocityXZ.sqrMagnitude > 0.001f)
         {
@@ -251,7 +248,7 @@ public class My_PlayerController : My_PlayerControllerBase, ITeleportable
             // Get local-space velocity
             var vel = Quaternion.Inverse(transform.rotation) * m_CurrentVelocityXZ;
             vel.y = m_CurrentVelocityY;
-            //PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
+            PostUpdate(vel, m_IsSprinting ? JumpSpeed / SprintJumpSpeed : 1);
         }
     }
 

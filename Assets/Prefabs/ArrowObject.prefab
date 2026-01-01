@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move: 0
   Speed: 10
-  CheckDistance: 3
+  CheckDistance: 2.2
   HitOffset: 0.6
   destroyArrowAfterHitTarget: 10
   CollisionLayers:

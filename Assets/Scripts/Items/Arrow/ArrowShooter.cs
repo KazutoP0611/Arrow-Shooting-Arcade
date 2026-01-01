@@ -17,6 +17,8 @@ public class ArrowShooter : MonoBehaviour
     [SerializeField] private AudioSource bowAudioSource;
     [SerializeField] private AudioClip bowReleaseSound;
 
+    public float GetAimingValue { get => aimValue; }
+
     [Header("Debug Only")]
     public Transform GetShootPoint { get => shootPoint; }
     public Vector3 AimingDirection { get => aimingDirection; }

@@ -4905,6 +4905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 486043181}
   - component: {fileID: 486043182}
+  - component: {fileID: 486043183}
   m_Layer: 5
   m_Name: Aim Reticle
   m_TagString: Untagged
@@ -4943,6 +4944,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486043180}
   m_CullTransparentMesh: 1
+--- !u!114 &486043183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486043180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24de187acd1287340a6f451fed46b6a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RadiusRange: {x: 2.5, y: 40}
+  arrowShooter: {fileID: 611505602}
+  Top: {fileID: 424388256}
+  Bottom: {fileID: 2056848196}
+  Left: {fileID: 1187078890}
+  Right: {fileID: 229455947}
 --- !u!1001 &494432267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5730,8 +5749,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 3.2
   SprintSpeed: 8
-  JumpSpeed: 5
-  SprintJumpSpeed: 7
+  JumpSpeed: 4
+  SprintJumpSpeed: 6
   MoveX:
     Value: 0
     Center: 0
@@ -5776,7 +5795,7 @@ MonoBehaviour:
   Landed:
     m_PersistentCalls:
       m_Calls: []
-  Damping: 0.35
+  Damping: 1
   Strafe: 0
   InputForward: 0
   UpMode: 1
@@ -11943,7 +11962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerRotation: 2
-  RotationDamping: 0
+  RotationDamping: 0.2
   HorizontalLook:
     Value: 0
     Center: 0
@@ -11955,7 +11974,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalLook:
-    Value: 30
+    Value: 0
     Center: 30
     Range: {x: -30, y: 30}
     Wrap: 0

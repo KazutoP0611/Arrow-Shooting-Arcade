@@ -59,6 +59,7 @@ public class My_AimController : MonoBehaviour, IInputAxisOwner
             m_Controller.PostUpdate -= PostUpdate;
             m_Controller.PostUpdate += PostUpdate;
             m_ControllerTransform = m_Controller.transform;
+            //Debug.LogWarning("Wa hoo!");
         }
     }
 
@@ -137,6 +138,7 @@ public class My_AimController : MonoBehaviour, IInputAxisOwner
             case CouplingMode.Decoupled:
                 {
                     m_Controller.SetStrafeMode(false);
+                    //RecenterPlayer();
                     break;
                 }
         }

@@ -64,7 +64,10 @@ This structure ensures:
 - Cinemachine is used for dynamic camera control
 - Camera behavior changes based on player state:
   - Normal movement mode
+    <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/17214a73-d782-4ccf-ad45-f5d678d2cb7c" />
+
   - Aiming mode (focused precision view)
+    <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/5b1ad26a-db41-4457-b59d-5e0bea66733a" />
 
 Player state determines active virtual camera and transition blending, ensuring smooth perspective changes.
 
@@ -79,6 +82,8 @@ Player state determines active virtual camera and transition blending, ensuring 
   - Movement direction
   - Score value
   - Target type (Green / Red)
+ 
+<img width="1779" height="1000" alt="image" src="https://github.com/user-attachments/assets/9714fc14-43d4-4690-8c67-fcea213a3186" />
 
 This system allows level designers to configure stages without modifying code.
 
@@ -119,6 +124,8 @@ This introduces strategic decision-making rather than simple avoidance.
 - UI Manager handles menu transitions
 - Opening UI disables player input and movement
 - Ensures clean gameplay-state separation
+
+<img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/d91803f9-11d8-427e-9f87-f324514eb582" />
 
 ---
 

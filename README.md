@@ -91,10 +91,15 @@ This system allows level designers to configure stages without modifying code.
 
 - 🔴 Red Target → Risk / Reward mechanic
   <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/2017e75c-0d25-4f61-b59d-9eb7596d1594" />
-
-Red target scoring rules:
-- Hitting outside the bullseye → Lose points  
-- Hitting the bullseye → Gain 10x the base score  
+  
+**Red target scoring rules:**
+- Hitting outside the bullseye → Lose points
+  <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/0c0d519a-7cf7-4d5f-a93f-402778fe03ff" />
+  <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/bc26c38d-bbbd-44c8-b9ed-2d74d92f695d" />
+  
+- Hitting the bullseye → Gain 10x the base score
+  <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/778c32cc-bcd5-434a-bf2f-934fc1ca8c46" />
+  <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/cb6b4a57-344f-441f-9f96-026fce1033a8" />
 
 This introduces strategic decision-making rather than simple avoidance.
 
@@ -105,6 +110,8 @@ This introduces strategic decision-making rather than simple avoidance.
 - Identifies target types
 - Manages scoring logic centrally
 - Keeps gameplay scalable and maintainable
+
+<img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/bd213392-e218-4de8-8f74-2482057f34fb" />
 
 ---
 

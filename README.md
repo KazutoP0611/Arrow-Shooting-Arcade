@@ -78,9 +78,10 @@ Player state determines active virtual camera and transition blending, ensuring 
 ### Modular Target Prefab
 - A single reusable prefab supports multiple target types.
 - Target behavior is configured via parameters:
+  Such as
   - Movement speed
   - Movement direction
-  - Score value
+  - Score base value
   - Target type (Green / Red)
  
 <img width="1779" height="1000" alt="image" src="https://github.com/user-attachments/assets/9714fc14-43d4-4690-8c67-fcea213a3186" />

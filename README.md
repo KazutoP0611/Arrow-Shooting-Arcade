@@ -20,6 +20,11 @@ This project emphasizes smooth character transitions, responsive aiming mechanic
 
 ---
 
+## 🎥 Gameplay Video
+[Watch Gameplay Video](https://youtu.be/R1gA_aSVZLw)
+
+---
+
 ## 🎮 Core Gameplay
 
 ### 🏹 Archery System

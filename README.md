@@ -1,5 +1,10 @@
 # 3D Archery Challenge : Arrow Shooting Arcade (High-Quality 3D Shooting Game)
 
+## 🎥 Gameplay Video
+[Watch Gameplay Video](https://youtu.be/R1gA_aSVZLw)
+
+---
+
 #### 🏹 3D Archery Challenge : Arrow Shooting Arcade
 A high-quality 3D archery game built in Unity, focused on advanced animation state management, dynamic camera control, and flexible scoring systems designed for level scalability.
 This project emphasizes smooth character transitions, responsive aiming mechanics, and designer-friendly target configuration.
@@ -17,11 +22,6 @@ This project emphasizes smooth character transitions, responsive aiming mechanic
 - Modular target prefab system with configurable parameters
 - Centralized point counter manager
 - UI system
-
----
-
-## 🎥 Gameplay Video
-[Watch Gameplay Video](https://youtu.be/R1gA_aSVZLw)
 
 ---
 

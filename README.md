@@ -5,8 +5,8 @@
 
 ---
 
-#### 🏹 3D Archery Challenge : Arrow Shooting Arcade
-A high-quality 3D archery game built in Unity, focused on advanced animation state management, dynamic camera control, and flexible scoring systems designed for level scalability.
+## 🏹 3D Archery Challenge : Arrow Shooting Arcade
+A 3D archery game, focused on advanced animation state management, dynamic camera control, and flexible scoring systems designed for level scalability.
 This project emphasizes smooth character transitions, responsive aiming mechanics, and designer-friendly target configuration.
 
 <img width="854" height="480" alt="image" src="https://github.com/user-attachments/assets/a1aa4170-777f-4783-ae2f-8c98abc37e93" />
@@ -83,7 +83,6 @@ Player state determines active virtual camera and transition blending, ensuring 
 ### Modular Target Prefab
 - A single reusable prefab supports multiple target types.
 - Target behavior is configured via parameters:
-  Such as
   - Movement speed
   - Movement direction
   - Score base value

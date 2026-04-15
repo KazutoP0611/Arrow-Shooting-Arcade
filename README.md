@@ -54,7 +54,7 @@ The character animation system is built using a structured Unity Animator State 
 - DrawArrow transitions into OverDraw using Exit Time to ensure animation continuity
 - OverDraw cannot be entered directly — it is a continuation state from DrawArrow
 - Exit Time is used strategically for smooth animation continuity (Draw → OverDraw)
-- Multiple parameters control transitions (running, waling, aiming, shoot action triggers)
+- Multiple parameters control transitions (running, walking, aiming, shoot action triggers)
 - Smooth blending to preserve responsiveness during gameplay
 
 This structure ensures:
@@ -130,8 +130,7 @@ This introduces strategic decision-making rather than simple avoidance.
 ---
 
 ## 🔄 Scene Management
-- Smooth scene transitions
-- Controlled gameplay flow between levels
+- UI fade program for smooth scene transitions, preventing instant scene swaps from being visible to the player
 
 ---
 

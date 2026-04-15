@@ -14,7 +14,7 @@ This project emphasizes smooth character transitions, responsive aiming mechanic
 ---
 
 ## ⚙️ Technical Highlights
-- Engine: Unity 6 (6000.0.3f1)
+- Engine: Unity 6 (6000.3.6f1)
 - Programming Language: C#
 - Complex Unity Animator State Machine with smooth transition blending
 - Cinemachine-based dynamic camera system
